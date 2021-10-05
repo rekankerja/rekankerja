@@ -1,0 +1,84 @@
+{
+  "project_info": {
+    "project_number": "374032370686",
+    "project_id": "rekankerja",
+    "storage_bucket": "rekankerja.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:374032370686:android:58c9b1902518c0d58a4eaf",
+        "android_client_info": {
+          "package_name": "com.rekankerja"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "374032370686-n3map3glof4e5afo14hbh3g0bsldcrgd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4WedyVocPVdajp2fJay6fZSt83n03wWg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "374032370686-n3map3glof4e5afo14hbh3g0bsldcrgd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:374032370686:android:1b3fa53ab1ce8e498a4eaf",
+        "android_client_info": {
+          "package_name": "com.temankerja"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "374032370686-5u34t6bg1euluf1r3gnv6aal58a312to.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.temankerja",
+            "certificate_hash": "92be279f85dc22bf891e549901428ef9f957f0fc"
+          }
+        },
+        {
+          "client_id": "374032370686-d8oh4rshdnjq8agfq6s7fr9inh94fnef.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.temankerja",
+            "certificate_hash": "298b501a8876afee53be916cf59badf8f26b975f"
+          }
+        },
+        {
+          "client_id": "374032370686-n3map3glof4e5afo14hbh3g0bsldcrgd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4WedyVocPVdajp2fJay6fZSt83n03wWg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "374032370686-n3map3glof4e5afo14hbh3g0bsldcrgd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
