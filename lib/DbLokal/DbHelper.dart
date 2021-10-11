@@ -69,7 +69,7 @@ class DBHelper {
 
     /// bikin database untuk list rekan kerja
     await db.execute(
-        "CREATE TABLE rekankerja(id INTEGER PRIMARY KEY, uid TEXT, email TEXT, displayName TEXT, urlPhoto TEXT, isNotifOn TEXT, workStatus TEXT, keteranganWorkStatus TEXT, latitude TEXT, longitude TEXT, alatConnect TEXT, lastLogin Text, lastUpdate Text)");
+        "CREATE TABLE rekankerja(id INTEGER PRIMARY KEY, uid TEXT, email TEXT, displayName TEXT, urlPhoto TEXT, jabatan TEXT, isNotifOn TEXT, workStatus TEXT, keteranganWorkStatus TEXT, latitude TEXT, longitude TEXT, alatConnect TEXT, lastLogin Text, lastUpdate Text)");
   }
 
   // /// Create Employee table V2
@@ -340,7 +340,7 @@ class DBHelper {
   ///
   /// MASUK KE DB REKAN KERJA ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  Future<int> saveRekanKerja(RekanKerja rekanKerja) async {
+  Future<int> saveRekanKerja(RekanKerjaHelper rekanKerja) async {
     var dbClient = await db;
     int res = await dbClient.insert("rekankerja", rekanKerja.toMap());
 
@@ -354,23 +354,24 @@ class DBHelper {
     return res;
   }
 
-  Future<bool> updateRekanKerja(RekanKerja rekanKerja) async {
+  Future<bool> updateRekanKerja(RekanKerjaHelper rekanKerja) async {
     var dbclient = await db;
     int res = await dbclient.update("rekankerja", rekanKerja.toMap(),
         where: "id=?", whereArgs: <int>[rekanKerja.id]);
     return res > 0 ? true : false;
   }
 
-  Future<List<RekanKerja>> getRekanKerja() async {
+  Future<List<RekanKerjaHelper>> getRekanKerja() async {
     var dbClient = await db;
     List<Map> list = await dbClient.rawQuery("Select * from rekankerja");
-    List<RekanKerja> dataRekanKerja = new List();
+    List<RekanKerjaHelper> dataRekanKerja = new List();
     for (int i = 0; i < list.length; i++) {
-      var data = new RekanKerja(
+      var data = new RekanKerjaHelper(
           list[i]['_uid'],
           list[i]['_email'],
           list[i]['_displayName'],
           list[i]['_urlPhoto'],
+          list[i]['_jabatan'],
           list[i]['_isNotifOn'],
           list[i]['_workStatus'],
           list[i]['_keteranganWorkStatus'],

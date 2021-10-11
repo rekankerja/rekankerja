@@ -4,12 +4,12 @@ class ClassUserLogin {
   String displayName;
   String email;
   String photoURL;
-  DateTime createDate;
-  DateTime lastSignInTime;
+  String createDate;
+  String lastSignInTime;
   String jabatan;
   String referall;
   String selfReferall;
-  String isNotifOn;
+  String isNotifOn = "FALSE";
   String workStatus;
   String keteranganWorkStatus;
   String latitude;
@@ -47,6 +47,5 @@ class ClassUserLogin {
       this.keteranganWorkStatus,
       this.latitude,
       this.longitude
-
       );
 }

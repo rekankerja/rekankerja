@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mqtt_client/mqtt_client.dart';
+import 'package:rekankerja/Class/ClassRekanKerja.dart';
 import 'package:rekankerja/Class/ClassSettingAdmin.dart';
 import 'package:rekankerja/Class/ClassUserLogin.dart';
 import 'package:rekankerja/DbLokal/DbHelper.dart';
@@ -119,11 +120,10 @@ Future<int> Subs() async {
     /// lets not constrain ourselves yet until the package has been in the wild
     /// for a while.
     /// The payload is a byte buffer, this will be specific to the topic
-    if(c[0].topic.startsWith("RekanKerjaSetting/${userLogin2.referall}")){
+    if (c[0].topic.startsWith("RekanKerjaSetting/${userLogin2.referall}")) {
       ListenSettingAdmin(pt);
-    }
-    else {
-      print("GAK DAPAT");
+    } else if (c[0].topic.startsWith("RekanKerja/${userLogin2.referall}")) {
+      ListenRekanKerja(pt);
     }
     print(
         'Change notification:: topic is <${c[0].topic}>, payload is <-- $pt -->');
@@ -271,8 +271,8 @@ class AuthenticationSignIn {
                 userLogin.displayName,
                 userLogin.email,
                 userLogin.photoURL,
-                userLogin.metadata.creationTime,
-                userLogin.metadata.lastSignInTime,
+                userLogin.metadata.creationTime.toString(),
+                userLogin.metadata.lastSignInTime.toString(),
                 "ADMIN",
                 "${userLogin.uid.substring(0, 5)}",
                 "${userLogin.uid.substring(0, 5)}",
@@ -283,7 +283,9 @@ class AuthenticationSignIn {
                 null);
 
             try {
-              Subs(); // SUBs untuk MQTT
+              await Future.delayed(const Duration(seconds: 2), () {
+                Subs();
+              }); // SUBs untuk MQTT
             } catch (er) {
               print(er);
             }
@@ -294,8 +296,8 @@ class AuthenticationSignIn {
                 userLogin.displayName,
                 userLogin.email,
                 userLogin.photoURL,
-                userLogin.metadata.creationTime,
-                userLogin.metadata.lastSignInTime,
+                userLogin.metadata.creationTime.toString(),
+                userLogin.metadata.lastSignInTime.toString(),
                 "${responselog[urutanDBLokalUserLogin].jabatan}",
                 "${responselog[urutanDBLokalUserLogin].referall}",
                 "${responselog[urutanDBLokalUserLogin].selfReferall}",
@@ -304,6 +306,18 @@ class AuthenticationSignIn {
                 "${responselog[urutanDBLokalUserLogin].keteranganWorkStatus}",
                 "${responselog[urutanDBLokalUserLogin].latitude}",
                 "${responselog[urutanDBLokalUserLogin].longitude}");
+
+            try{
+              /// GET DATA UNTUK USER REKAN KERJA
+              final responselogrekankerja = await db.getRekanKerja();
+              rekanKerja.clear(); // Kosongkan dahulu
+              for(int _i=0 ; _i < responselogrekankerja.length; _i++){
+                rekanKerja.add(ClassRekanKerja(responselogrekankerja[_i].uid, responselogrekankerja[_i].displayName, responselogrekankerja[_i].email, responselogrekankerja[_i].urlPhoto, responselogrekankerja[_i].jabatan, null, responselogrekankerja[_i].lastLogin, null, null, responselogrekankerja[_i].isNotifOn, responselogrekankerja[_i].workStatus, responselogrekankerja[_i].keteranganWorkStatus, responselogrekankerja[_i].latitude, responselogrekankerja[_i].longitude, responselogrekankerja[_i].lastUpdate));
+              }
+            } catch(er){
+              print(er);
+            }
+
           }
           //Jika data user sudah ada
           // var userhelper = UserHelper(userLogin.uid, userLogin.email, userLogin.displayName, userLogin.metadata.lastSignInTime.toString(), "${responselog[0].jabatan}", "${responselog[0].referall}", "${responselog[0].selfReferall}", "${responselog[0].isNotifOn}", "$appVersion", "$buildCode");
@@ -336,8 +350,8 @@ class AuthenticationSignIn {
                 userLogin.displayName,
                 userLogin.email,
                 userLogin.photoURL,
-                userLogin.metadata.creationTime,
-                userLogin.metadata.lastSignInTime,
+                userLogin.metadata.creationTime.toString(),
+                userLogin.metadata.lastSignInTime.toString(),
                 "${responselog[0].jabatan}",
                 "${responselog[0].referall}",
                 "${responselog[0].selfReferall}",
@@ -348,7 +362,9 @@ class AuthenticationSignIn {
                 null);
 
             try {
-              Subs(); // SUBs untuk MQTT
+              await Future.delayed(const Duration(seconds: 2), () {
+                Subs();
+              }); // SUBs untuk MQTT
             } catch (er) {
               print(er);
             }
@@ -451,8 +467,8 @@ class Authentication {
               userLogin.displayName,
               userLogin.email,
               userLogin.photoURL,
-              userLogin.metadata.creationTime,
-              userLogin.metadata.lastSignInTime,
+              userLogin.metadata.creationTime.toString(),
+              userLogin.metadata.lastSignInTime.toString(),
               "ADMIN",
               "${userLogin.uid.substring(0, 5)}",
               "${userLogin.uid.substring(0, 5)}",
@@ -468,8 +484,8 @@ class Authentication {
               userLogin.displayName,
               userLogin.email,
               userLogin.photoURL,
-              userLogin.metadata.creationTime,
-              userLogin.metadata.lastSignInTime,
+              userLogin.metadata.creationTime.toString(),
+              userLogin.metadata.lastSignInTime.toString(),
               "${responselog[urutanDBLokalUserLogin].jabatan}",
               "${responselog[urutanDBLokalUserLogin].referall}",
               "${responselog[urutanDBLokalUserLogin].selfReferall}",
@@ -478,11 +494,24 @@ class Authentication {
               "${responselog[urutanDBLokalUserLogin].keteranganWorkStatus}",
               "${responselog[urutanDBLokalUserLogin].latitude}",
               "${responselog[urutanDBLokalUserLogin].longitude}");
+
+          try{
+            /// GET DATA UNTUK USER REKAN KERJA
+            final responselogrekankerja = await db.getRekanKerja();
+            rekanKerja.clear(); // Kosongkan dahulu
+            for(int _i=0 ; _i < responselogrekankerja.length; _i++){
+              rekanKerja.add(ClassRekanKerja(responselogrekankerja[_i].uid, responselogrekankerja[_i].displayName, responselogrekankerja[_i].email, responselogrekankerja[_i].urlPhoto, responselogrekankerja[_i].jabatan, null, responselogrekankerja[_i].lastLogin, null, null, responselogrekankerja[_i].isNotifOn, responselogrekankerja[_i].workStatus, responselogrekankerja[_i].keteranganWorkStatus, responselogrekankerja[_i].latitude, responselogrekankerja[_i].longitude, responselogrekankerja[_i].lastUpdate));
+            }
+          } catch(er){
+            print(er);
+          }
+
         }
         try {
-          Subs(); // SUBs untuk MQTT
+          await Future.delayed(const Duration(seconds: 2), () {
+            Subs();
+          }); // SUBs untuk MQTT
         } catch (er) {
-
           print(er);
         }
         //Jika data user sudah ada
@@ -516,8 +545,8 @@ class Authentication {
               userLogin.displayName,
               userLogin.email,
               userLogin.photoURL,
-              userLogin.metadata.creationTime,
-              userLogin.metadata.lastSignInTime,
+              userLogin.metadata.creationTime.toString(),
+              userLogin.metadata.lastSignInTime.toString(),
               "${responselog[0].jabatan}",
               "${responselog[0].referall}",
               "${responselog[0].selfReferall}",
@@ -722,39 +751,43 @@ TimerPublishSettingAdmin() async {
 
 PublishData() async {
   final isitabelsetting = await db.getSettingAdmin();
-  List<ClassSettingAdmin> keseluruhanSettingAdmin = [];
+  final isitabeluser = await db.getUser();
+  List<ClassSettingAdmin> dataSettingAdmin = [];
+  List<ClassUserLogin> dataUserLogin = [];
   Map _temp;
   String _tempString = "[";
 
   List list = [];
 
-  try{
+  try {
     for (int _i = 0; _i < 8; _i++) {
-      keseluruhanSettingAdmin.add(ClassSettingAdmin(
+      dataSettingAdmin.add(ClassSettingAdmin(
           isitabelsetting[_i].setting,
           isitabelsetting[_i].attribut1,
           isitabelsetting[_i].attribut2,
           isitabelsetting[_i].attribut3,
           isitabelsetting[_i].attribut4));
     }
-    //
-    keseluruhanSettingAdmin.forEach((element) {
-
-      print("DISINI");
-      _temp = element.toJson();
-      print(_temp);
-
-      String _temp2 = _temp.toString();
-      list.add(_temp2);
-    });
-
-    PublishSettingAdmin(json.encode(keseluruhanSettingAdmin));
-  }
-  catch(er){
+    dataUserLogin.add(ClassUserLogin(
+        isitabeluser[0].uid,
+        isitabeluser[0].displayName,
+        isitabeluser[0].email,
+        isitabeluser[0].urlPhoto,
+        null,
+        isitabeluser[0].lastLogin,
+        isitabeluser[0].jabatan,
+        isitabeluser[0].referall,
+        isitabeluser[0].selfReferall,
+        isitabeluser[0].isNotifOn,
+        isitabeluser[0].workStatus,
+        isitabeluser[0].keteranganWorkStatus,
+        isitabeluser[0].latitude,
+        isitabeluser[0].longitude));
+    PublishSettingAdmin(json.encode(dataSettingAdmin));
+    PublishRekanKerja(json.encode(dataUserLogin));
+  } catch (er) {
     print(er);
   }
-
-
 }
 
 SetGPS(latitude, longitude) async {
@@ -783,3 +816,6 @@ SetGPS(latitude, longitude) async {
   userhelper.setUserId(responselog[urutanDBLokalUserLogin].id);
   await db.updateUser(userhelper);
 }
+
+
+

@@ -5,9 +5,9 @@ import '../main.dart';
 
 ReceivePort _receivePort;
 
-void _startForegroundTask() async {
+void startForegroundTask() async {
   // You can save data using the saveData function.
-  await FlutterForegroundTask.saveData('customData', 'hello');
+  //await FlutterForegroundTask.saveData('customData', 'hello');
 
   _receivePort = await FlutterForegroundTask.startService(
     notificationTitle: 'Foreground Service is running',
@@ -23,6 +23,6 @@ void _startForegroundTask() async {
   });
 }
 
-void _stopForegroundTask() {
+void stopForegroundTask() {
   FlutterForegroundTask.stopService();
 }

@@ -12,7 +12,7 @@ import 'package:rekankerja/Global/GlobalFunction.dart';
 import 'package:rekankerja/Global/GlobalFunctionPublishMQTT.dart';
 import 'package:rekankerja/Global/GlobalVariable.dart';
 import 'RekanKerjaPage.dart';
-import 'SettingsPage.dart';
+import 'PesanPage.dart';
 import 'package:rekankerja/screen/loginscreen.dart';
 import 'package:rekankerja/utils/signoutproses.dart';
 

@@ -8,54 +8,25 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Container(
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text("Set Device"),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 12.0,
-                ),
-                Row(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text("Koneksi Blueetooth Device"),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 12.0,
-                ),
-                Row(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text("Set Jam Kerja"),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 12.0,
-                ),
-                Row(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text("Set Libur"),
-                    )
-                  ],
-                ),
+    return Scaffold(
+      body: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: AppBar(
+            bottom: const TabBar(
+              tabs: [
+                Tab(icon: Icon(Icons.move_to_inbox), text: "Pesan Masuk",),
+                Tab(icon: Icon(Icons.outbox), text: "Pesan Keluar"),
               ],
-            )
+            ),
+            title: const Text('Pesan'),
+          ),
+          body: const TabBarView(
+            children: [
+              Icon(Icons.directions_car),
+              Icon(Icons.directions_transit),
+            ],
+          ),
         ),
       ),
     );

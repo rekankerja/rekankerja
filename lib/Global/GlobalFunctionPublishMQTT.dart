@@ -6,5 +6,11 @@ PublishSettingAdmin(data) async {
   builder.addString('$data');
 
   client.publishMessage(pubtopic4, MqttQos.exactlyOnce, builder.payload);
+}
 
+PublishRekanKerja(data) async {
+  final builder = MqttClientPayloadBuilder();
+  builder.addString('$data');
+
+  client.publishMessage(pubtopic5, MqttQos.exactlyOnce, builder.payload);
 }

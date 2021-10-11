@@ -262,12 +262,13 @@ class SettingAdmin {
   }
 }
 
-class RekanKerja {
+class RekanKerjaHelper {
   int id;
   String _uid;
   String _email;
   String _displayName;
   String _urlPhoto;
+  String _jabatan;
   String _isNotifOn;
   String _workStatus;
   String _keteranganWorkStatus;
@@ -277,11 +278,12 @@ class RekanKerja {
   String _lastLogin;
   String _lastUpdate;
 
-  RekanKerja(
+  RekanKerjaHelper(
       this._uid,
       this._email,
       this._displayName,
       this._urlPhoto,
+      this._jabatan,
       this._isNotifOn,
       this._workStatus,
       this._keteranganWorkStatus,
@@ -292,11 +294,12 @@ class RekanKerja {
       this._lastUpdate,
       );
 
-  RekanKerja.map(dynamic obj) {
+  RekanKerjaHelper.map(dynamic obj) {
     this._uid = obj["uid"];
     this._email = obj["email"];
     this._displayName = obj["displayName"];
     this._urlPhoto = obj["urlPhoto"];
+    this._jabatan = obj["jabatan"];
     this._isNotifOn = obj["isNotifOn"];
     this._workStatus = obj["workStatus"];
     this._keteranganWorkStatus = obj["keteranganWorkStatus"];
@@ -311,6 +314,7 @@ class RekanKerja {
   String get email => _email;
   String get displayName => _displayName;
   String get urlPhoto => _urlPhoto;
+  String get jabatan => _jabatan;
   String get isNotifOn => _isNotifOn;
   String get workStatus => _workStatus;
   String get keteranganWorkStatus => _keteranganWorkStatus;
@@ -327,6 +331,7 @@ class RekanKerja {
     map['email'] = _email;
     map['displayName'] = _displayName;
     map['urlPhoto'] = _urlPhoto;
+    map['jabatan'] = _jabatan;
     map['isNotifOn'] = _isNotifOn;
     map['workStatus'] = _workStatus;
     map['keteranganWorkStatus'] = _keteranganWorkStatus;

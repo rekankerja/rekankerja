@@ -7,6 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:rekankerja/Global/GlobalFunction.dart';
+import 'package:rekankerja/Global/GlobalFunctionForeground.dart';
 import 'package:rekankerja/utils/utilityscreen.dart';
 import 'dart:isolate';
 import '../Global/GlobalVariable.dart';
@@ -33,6 +34,7 @@ class _BerandaPageState extends State<BerandaPage> with WidgetsBindingObserver {
   void initState() {
     _getPermission();
     _initForegroundTask();
+    startForegroundTask();
     WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
@@ -40,11 +42,11 @@ class _BerandaPageState extends State<BerandaPage> with WidgetsBindingObserver {
   void _initForegroundTask() {
     FlutterForegroundTask.init(
       androidNotificationOptions: AndroidNotificationOptions(
-        channelId: 'notification_channel_id',
-        channelName: 'Foreground Notification',
-        channelDescription: 'This notification appears when the foreground service is running.',
+        channelId: 'notifId',
+        channelName: 'Rakan Kerja',
+        channelDescription: 'Stay Active and Keep Production',
         channelImportance: NotificationChannelImportance.LOW,
-        priority: NotificationPriority.LOW,
+        priority: NotificationPriority.HIGH,
         iconData: NotificationIconData(
           resType: ResourceType.mipmap,
           resPrefix: ResourcePrefix.ic,
@@ -56,7 +58,7 @@ class _BerandaPageState extends State<BerandaPage> with WidgetsBindingObserver {
         playSound: false,
       ),
       foregroundTaskOptions: ForegroundTaskOptions(
-        interval: 5000,
+        interval:  int.parse(refreshRate.attribut1) * 1000,
         autoRunOnBoot: true,
       ),
       printDevLog: true,
@@ -230,34 +232,34 @@ class _BerandaPageState extends State<BerandaPage> with WidgetsBindingObserver {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("MQTT Status :"),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 4.0),
-                      child: Row(
-                        children: [
-                          Container(
-                            height: 10,
-                            width: 10,
-                            decoration: BoxDecoration(
-                                color: isMqttConnect ? Colors.green : Colors.red,
-                                borderRadius: BorderRadius.circular(20)),
-                          ),
-                          Text(
-                            " ${isMqttConnect.toString().toUpperCase()}",
-                            style: TextStyle(color: isMqttConnect ? Colors.green : Colors.red, fontSize: ScreenUtil().setSp(12),
-                                fontWeight: FontWeight.w700),
-                          )
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.all(8.0),
+              //   child: Column(
+              //     crossAxisAlignment: CrossAxisAlignment.start,
+              //     children: [
+              //       Text("MQTT Status :"),
+              //       Padding(
+              //         padding: const EdgeInsets.only(left: 4.0),
+              //         child: Row(
+              //           children: [
+              //             Container(
+              //               height: 10,
+              //               width: 10,
+              //               decoration: BoxDecoration(
+              //                   color: isMqttConnect ? Colors.green : Colors.red,
+              //                   borderRadius: BorderRadius.circular(20)),
+              //             ),
+              //             Text(
+              //               " ${isMqttConnect.toString().toUpperCase()}",
+              //               style: TextStyle(color: isMqttConnect ? Colors.green : Colors.red, fontSize: ScreenUtil().setSp(12),
+              //                   fontWeight: FontWeight.w700),
+              //             )
+              //           ],
+              //         ),
+              //       )
+              //     ],
+              //   ),
+              // ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
@@ -301,56 +303,56 @@ class _BerandaPageState extends State<BerandaPage> with WidgetsBindingObserver {
           SizedBox(
             height: 12,
           ),
-          Text("Pesan dari Teman Kerja : "),
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        height: 24,
-                        width: 24,
-                        decoration: BoxDecoration(
-                            color: Colors.brown,
-                            borderRadius: BorderRadius.circular(24)),
-                      ),
-                      SizedBox(width: 8),
-                      Text("Nama Karyawan")
-                    ],
-                  ),
-                  SizedBox(height: 12),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    child: Text(
-                      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce eu purus sollicitudin, bibendum mauris suscipit, commodo lectus. Nam consequat ultricies leo, aliquam egestas turpis gravida quis. Pellentesque hendrerit ex et velit feugiat, id dapibus nisl",
-                      maxLines: 10,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.green,
-                            borderRadius: BorderRadius.circular(4)),
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Text("Konfirmasi"),
-                        ),
-                      )
-                    ],
-                  )
-                ],
-              ),
-            ),
-          )
+          // Text("Pesan dari Teman Kerja : "),
+          // Card(
+          //   child: Padding(
+          //     padding: const EdgeInsets.all(8.0),
+          //     child: Column(
+          //       crossAxisAlignment: CrossAxisAlignment.start,
+          //       children: [
+          //         Row(
+          //           children: [
+          //             Container(
+          //               height: 24,
+          //               width: 24,
+          //               decoration: BoxDecoration(
+          //                   color: Colors.brown,
+          //                   borderRadius: BorderRadius.circular(24)),
+          //             ),
+          //             SizedBox(width: 8),
+          //             Text("Nama Karyawan")
+          //           ],
+          //         ),
+          //         SizedBox(height: 12),
+          //         Container(
+          //           width: MediaQuery.of(context).size.width,
+          //           child: Text(
+          //             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce eu purus sollicitudin, bibendum mauris suscipit, commodo lectus. Nam consequat ultricies leo, aliquam egestas turpis gravida quis. Pellentesque hendrerit ex et velit feugiat, id dapibus nisl",
+          //             maxLines: 10,
+          //             overflow: TextOverflow.ellipsis,
+          //           ),
+          //         ),
+          //         SizedBox(
+          //           height: 8,
+          //         ),
+          //         Row(
+          //           mainAxisAlignment: MainAxisAlignment.end,
+          //           children: [
+          //             Container(
+          //               decoration: BoxDecoration(
+          //                   color: Colors.green,
+          //                   borderRadius: BorderRadius.circular(4)),
+          //               child: Padding(
+          //                 padding: const EdgeInsets.all(12.0),
+          //                 child: Text("Konfirmasi"),
+          //               ),
+          //             )
+          //           ],
+          //         )
+          //       ],
+          //     ),
+          //   ),
+          // )
         ],
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rekankerja/Global/GlobalVariable.dart';
 import 'DetailRekanKerjaPage.dart';
 
 class RekanKerjaPage extends StatefulWidget {
@@ -12,7 +13,7 @@ class _RekanKerjaPageState extends State<RekanKerjaPage> {
     return Container(
       margin: EdgeInsets.only(left: 12, right: 12, top: 24),
       child: ListView.builder(
-          itemCount: 6,
+          itemCount: rekanKerja.length,
           itemBuilder: (context, i){
         return GestureDetector(
           onTap: (){
@@ -23,7 +24,7 @@ class _RekanKerjaPageState extends State<RekanKerjaPage> {
           },
           child: Card(
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(8.0),
               child: Column(
                 children: [
                   Row(
@@ -38,7 +39,7 @@ class _RekanKerjaPageState extends State<RekanKerjaPage> {
                       SizedBox(
                         width: 8
                       ),
-                      Text("Nama Karyawan")
+                      Text("${rekanKerja[i].displayName}")
                     ],
                   ),
                   Row(
@@ -66,7 +67,7 @@ class _RekanKerjaPageState extends State<RekanKerjaPage> {
                             borderRadius: BorderRadius.circular(20)),
                       ),
                       Text(
-                        " Work Status : Active",
+                        " Work Status : ${rekanKerja[i].workStatus}",
                         style: TextStyle(color: Colors.green),
                       )
                     ],
