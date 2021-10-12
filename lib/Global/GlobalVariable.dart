@@ -30,7 +30,7 @@ ClassUserLogin userLogin2; // Ini data untuk UserLogin yang sudah diolah berdasa
 ClassSettingAdmin refreshRate = ClassSettingAdmin("REFRESH RATE", "5", null, null, null); // Ini data untuk Refresh Rate
 
 
-List<ClassRekanKerja> rekanKerja = [];
+
 List<ClassSettingAdmin> settingAdminHariKerja = [];
 int urutanDBLokalUserLogin;
 Timer timer;
@@ -42,3 +42,5 @@ String topic4 = 'RekanKerjaSetting/${userLogin2.referall}/#'; /// SETTINGAN ADMI
 
 String pubtopic4 = 'RekanKerjaSetting/${userLogin2.referall}/${userLogin2.uid}'; /// PUBLISH ADMIN REKAN KERJA
 String pubtopic5 = 'RekanKerja/${userLogin2.referall}/${userLogin2.uid}'; /// PUBLISH DATA REKAN KERJA
+String pubtopic6 = 'RekanKerjaBuzzer/${userLogin2.referall}/${userLogin2.uid}'; /// PUBLISH DATA BUZZER
+String pubtopic7 = 'RekanKerjaBuzzerReport/${userLogin2.referall}/${userLogin2.uid}'; /// PUBLISH DATA BUZZER REPORT

@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mqtt_client/mqtt_client.dart';
+import 'package:ntp/ntp.dart';
 import 'package:rekankerja/Class/ClassRekanKerja.dart';
 import 'package:rekankerja/Class/ClassSettingAdmin.dart';
 import 'package:rekankerja/Class/ClassUserLogin.dart';
@@ -307,17 +308,31 @@ class AuthenticationSignIn {
                 "${responselog[urutanDBLokalUserLogin].latitude}",
                 "${responselog[urutanDBLokalUserLogin].longitude}");
 
-            try{
-              /// GET DATA UNTUK USER REKAN KERJA
-              final responselogrekankerja = await db.getRekanKerja();
-              rekanKerja.clear(); // Kosongkan dahulu
-              for(int _i=0 ; _i < responselogrekankerja.length; _i++){
-                rekanKerja.add(ClassRekanKerja(responselogrekankerja[_i].uid, responselogrekankerja[_i].displayName, responselogrekankerja[_i].email, responselogrekankerja[_i].urlPhoto, responselogrekankerja[_i].jabatan, null, responselogrekankerja[_i].lastLogin, null, null, responselogrekankerja[_i].isNotifOn, responselogrekankerja[_i].workStatus, responselogrekankerja[_i].keteranganWorkStatus, responselogrekankerja[_i].latitude, responselogrekankerja[_i].longitude, responselogrekankerja[_i].lastUpdate));
-              }
-            } catch(er){
-              print(er);
-            }
-
+            // try {
+            //   /// GET DATA UNTUK USER REKAN KERJA
+            //   final responselogrekankerja = await db.getRekanKerja();
+            //   rekanKerja.clear(); // Kosongkan dahulu
+            //   for (int _i = 0; _i < responselogrekankerja.length; _i++) {
+            //     rekanKerja.add(ClassRekanKerja(
+            //         responselogrekankerja[_i].uid,
+            //         responselogrekankerja[_i].displayName,
+            //         responselogrekankerja[_i].email,
+            //         responselogrekankerja[_i].urlPhoto,
+            //         responselogrekankerja[_i].jabatan,
+            //         null,
+            //         responselogrekankerja[_i].lastLogin,
+            //         null,
+            //         null,
+            //         responselogrekankerja[_i].isNotifOn,
+            //         responselogrekankerja[_i].workStatus,
+            //         responselogrekankerja[_i].keteranganWorkStatus,
+            //         responselogrekankerja[_i].latitude,
+            //         responselogrekankerja[_i].longitude,
+            //         responselogrekankerja[_i].lastUpdate));
+            //   }
+            // } catch (er) {
+            //   print(er);
+            // }
           }
           //Jika data user sudah ada
           // var userhelper = UserHelper(userLogin.uid, userLogin.email, userLogin.displayName, userLogin.metadata.lastSignInTime.toString(), "${responselog[0].jabatan}", "${responselog[0].referall}", "${responselog[0].selfReferall}", "${responselog[0].isNotifOn}", "$appVersion", "$buildCode");
@@ -427,6 +442,7 @@ class Authentication {
 
     if (userLogin != null) {
       final responselog = await db.getUser();
+      final responselogrekankerja = await db.getRekanKerja();
 
       //userLogin2 = ClassUserLogin(userLogin.uid, userLogin.displayName, userLogin.email, userLogin.photoURL, userLogin.metadata.creationTime, userLogin.metadata.lastSignInTime, "${responselog[0].jabatan}", "${responselog[0].referall}", "${responselog[0].isNotifOn}");
 
@@ -495,17 +511,31 @@ class Authentication {
               "${responselog[urutanDBLokalUserLogin].latitude}",
               "${responselog[urutanDBLokalUserLogin].longitude}");
 
-          try{
-            /// GET DATA UNTUK USER REKAN KERJA
-            final responselogrekankerja = await db.getRekanKerja();
-            rekanKerja.clear(); // Kosongkan dahulu
-            for(int _i=0 ; _i < responselogrekankerja.length; _i++){
-              rekanKerja.add(ClassRekanKerja(responselogrekankerja[_i].uid, responselogrekankerja[_i].displayName, responselogrekankerja[_i].email, responselogrekankerja[_i].urlPhoto, responselogrekankerja[_i].jabatan, null, responselogrekankerja[_i].lastLogin, null, null, responselogrekankerja[_i].isNotifOn, responselogrekankerja[_i].workStatus, responselogrekankerja[_i].keteranganWorkStatus, responselogrekankerja[_i].latitude, responselogrekankerja[_i].longitude, responselogrekankerja[_i].lastUpdate));
-            }
-          } catch(er){
-            print(er);
-          }
-
+          // try {
+          //   /// GET DATA UNTUK USER REKAN KERJA
+          //
+          //   rekanKerja.clear(); // Kosongkan dahulu
+          //   for (int _i = 0; _i < responselogrekankerja.length; _i++) {
+          //     rekanKerja.add(ClassRekanKerja(
+          //         responselogrekankerja[_i].uid,
+          //         responselogrekankerja[_i].displayName,
+          //         responselogrekankerja[_i].email,
+          //         responselogrekankerja[_i].urlPhoto,
+          //         responselogrekankerja[_i].jabatan,
+          //         null,
+          //         responselogrekankerja[_i].lastLogin,
+          //         null,
+          //         null,
+          //         responselogrekankerja[_i].isNotifOn,
+          //         responselogrekankerja[_i].workStatus,
+          //         responselogrekankerja[_i].keteranganWorkStatus,
+          //         responselogrekankerja[_i].latitude,
+          //         responselogrekankerja[_i].longitude,
+          //         responselogrekankerja[_i].lastUpdate));
+          //   }
+          // } catch (er) {
+          //   print(er);
+          // }
         }
         try {
           await Future.delayed(const Duration(seconds: 2), () {
@@ -753,11 +783,9 @@ PublishData() async {
   final isitabelsetting = await db.getSettingAdmin();
   final isitabeluser = await db.getUser();
   List<ClassSettingAdmin> dataSettingAdmin = [];
-  List<ClassUserLogin> dataUserLogin = [];
-  Map _temp;
-  String _tempString = "[";
+  List<ClassRekanKerja> dataUserLogin = [];
 
-  List list = [];
+  DateTime date = await NTP.now();
 
   try {
     for (int _i = 0; _i < 8; _i++) {
@@ -768,7 +796,7 @@ PublishData() async {
           isitabelsetting[_i].attribut3,
           isitabelsetting[_i].attribut4));
     }
-    dataUserLogin.add(ClassUserLogin(
+    dataUserLogin.add(ClassRekanKerja(
         isitabeluser[0].uid,
         isitabeluser[0].displayName,
         isitabeluser[0].email,
@@ -782,7 +810,8 @@ PublishData() async {
         isitabeluser[0].workStatus,
         isitabeluser[0].keteranganWorkStatus,
         isitabeluser[0].latitude,
-        isitabeluser[0].longitude));
+        isitabeluser[0].longitude,
+        date.toString()));
     PublishSettingAdmin(json.encode(dataSettingAdmin));
     PublishRekanKerja(json.encode(dataUserLogin));
   } catch (er) {
@@ -816,6 +845,3 @@ SetGPS(latitude, longitude) async {
   userhelper.setUserId(responselog[urutanDBLokalUserLogin].id);
   await db.updateUser(userhelper);
 }
-
-
-

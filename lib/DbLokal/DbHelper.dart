@@ -357,7 +357,7 @@ class DBHelper {
   Future<bool> updateRekanKerja(RekanKerjaHelper rekanKerja) async {
     var dbclient = await db;
     int res = await dbclient.update("rekankerja", rekanKerja.toMap(),
-        where: "id=?", whereArgs: <int>[rekanKerja.id]);
+        where: "uid=?", whereArgs: <String>[rekanKerja.uid]);
     return res > 0 ? true : false;
   }
 
@@ -367,19 +367,19 @@ class DBHelper {
     List<RekanKerjaHelper> dataRekanKerja = new List();
     for (int i = 0; i < list.length; i++) {
       var data = new RekanKerjaHelper(
-          list[i]['_uid'],
-          list[i]['_email'],
-          list[i]['_displayName'],
-          list[i]['_urlPhoto'],
-          list[i]['_jabatan'],
-          list[i]['_isNotifOn'],
-          list[i]['_workStatus'],
-          list[i]['_keteranganWorkStatus'],
-          list[i]['_latitude'],
-          list[i]['_longitude'],
-          list[i]['_alatConnect'],
-          list[i]['_lastLogin'],
-          list[i]['_lastUpdate']);
+          list[i]['uid'],
+          list[i]['email'],
+          list[i]['displayName'],
+          list[i]['urlPhoto'],
+          list[i]['jabatan'],
+          list[i]['isNotifOn'],
+          list[i]['workStatus'],
+          list[i]['keteranganWorkStatus'],
+          list[i]['latitude'],
+          list[i]['longitude'],
+          list[i]['alatConnect'],
+          list[i]['lastLogin'],
+          list[i]['lastUpdate']);
       data.setrekankerjaId(list[i]['id']);
       dataRekanKerja.add(data);
     }

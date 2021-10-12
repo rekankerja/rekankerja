@@ -21,6 +21,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  ntp: ^2.0.0
   flutter_foreground_task: ^3.0.0+1
   equatable: ^2.0.3
   rxdart: ^0.27.1

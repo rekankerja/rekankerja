@@ -62,29 +62,62 @@ ListenSettingAdmin(data) async {
 }
 
 ListenRekanKerja(data) async {
-  bool rekanKerjaSudahAda = false;
+
+  bool rekanKerjaSudahAda = true;
   final responselog = await db.getRekanKerja();
   List listJson = jsonDecode(data) as List;
-  for (int _i = 0; _i < responselog.length; _i++) {
-    /// PENGUJIAN UNTUK APAKAH USER SUDAH PERNAH LOGIN LALU LOGOUT
-    if (responselog[_i].uid != userLogin.uid &&
-        responselog[_i].uid != listJson[0]["uid"]) {
-      /// Sudah ada di Database, Jangan Ditambahkan Ke DB
-      rekanKerjaSudahAda = true;
-      break;
+
+  if(responselog.isNotEmpty){
+    for (int _i = 0; _i < responselog.length; _i++) {
+      /// PENGUJIAN UNTUK APAKAH USER SUDAH PERNAH LOGIN LALU LOGOUT
+      if (listJson[0]["uid"] == userLogin2.uid) {
+        /// UID diri sendiri, Jangan Ditambahkan Ke DB
+        rekanKerjaSudahAda = true;
+      } else if(listJson[0]["uid"] == responselog[_i].uid){
+        /// UID yang sudah ada jgn ditambahkan ke database
+        /// update DB nya
+
+        var rekankerjahelper = RekanKerjaHelper(
+            listJson[0]["uid"],
+            listJson[0]["email"],
+            listJson[0]["displayName"],
+            listJson[0]["photoURL"],
+            listJson[0]["jabatan"],
+            listJson[0]["isNotifOn"],
+            listJson[0]["workStatus"],
+            listJson[0]["keteranganWorkStatus"],
+            listJson[0]["latitude"],
+            listJson[0]["longitude"],
+            listJson[0]["alatConnect"],
+            listJson[0]["lastLogin"],
+            listJson[0]["lastUpdate"]);
+        rekankerjahelper.setrekankerjaId(listJson[0]["id"]);
+        await db.updateRekanKerja(rekankerjahelper);
+
+
+        rekanKerjaSudahAda = true;
+      } else {
+        rekanKerjaSudahAda = false;
+        break;
+      }
     }
-    rekanKerjaSudahAda = false;
+  } else {
+    if (listJson[0]["uid"] == userLogin2.uid) {
+      /// UID diri sendiri, Jangan Ditambahkan Ke DB
+      rekanKerjaSudahAda = true;
+    } else {
+      rekanKerjaSudahAda = false;
+    }
   }
 
-
-  if (!rekanKerjaSudahAda) {
+  if (rekanKerjaSudahAda == false) {
     /// Apabila belum ada di db, maka tambah rekan kerja
 
     var rekankerjahelper = RekanKerjaHelper(
         listJson[0]["uid"],
         listJson[0]["email"],
         listJson[0]["displayName"],
-        listJson[0]["photoUrl"],
+        listJson[0]["photoURL"],
         listJson[0]["jabatan"],
         listJson[0]["isNotifOn"],
         listJson[0]["workStatus"],
@@ -96,21 +129,7 @@ ListenRekanKerja(data) async {
         listJson[0]["lastUpdate"]);
     await db.saveRekanKerja(rekankerjahelper);
 
-    rekanKerja.add(ClassRekanKerja(
-        listJson[0]["uid"],
-        listJson[0]["displayName"],
-        listJson[0]["email"],
-        listJson[0]["photoUrl"],
-        null,
-        listJson[0]["lastLogin"],
-        listJson[0]["jabatan"],
-        null,
-        null,
-        listJson[0]["isNotifOn"],
-        listJson[0]["workStatus"],
-        listJson[0]["keteranganWorkStatus"],
-        listJson[0]["latitude"],
-        listJson[0]["longitude"],
-        listJson[0]["lastUpdate"]));
-  }
+    }
+
+
 }

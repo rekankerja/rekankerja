@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:mqtt_client/mqtt_client.dart';
+import 'package:rekankerja/Class/ClassRekanKerja.dart';
 import 'package:rekankerja/Global/GlobalVariable.dart';
 import 'DetailRekanKerjaPage.dart';
 
@@ -8,77 +12,191 @@ class RekanKerjaPage extends StatefulWidget {
 }
 
 class _RekanKerjaPageState extends State<RekanKerjaPage> {
+  List<ClassRekanKerja> rekanKerja = [];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    getRekanKerjaFromDB();
+    ListenPerubahanData();
+    super.initState();
+  }
+
+  getRekanKerjaFromDB() async {
+    final responselog = await db.getRekanKerja();
+    for (int _i = 0; _i < responselog.length; _i++) {
+      rekanKerja.add(ClassRekanKerja(
+          responselog[_i].uid,
+          responselog[_i].displayName,
+          responselog[_i].email,
+          responselog[_i].urlPhoto,
+          null,
+          responselog[_i].lastLogin,
+          responselog[_i].jabatan,
+          null,
+          null,
+          responselog[_i].isNotifOn,
+          responselog[_i].workStatus,
+          responselog[_i].keteranganWorkStatus,
+          responselog[_i].latitude,
+          responselog[_i].longitude,
+          responselog[_i].lastUpdate));
+    }
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  ListenPerubahanData() {
+    client.updates.listen((List<MqttReceivedMessage<MqttMessage>> c) {
+      final recMess = c[0].payload as MqttPublishMessage;
+      final pt =
+          MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
+
+      if (c[0].topic.startsWith("RekanKerja/${userLogin2.referall}")) {
+        //
+        List listJson = jsonDecode(pt) as List;
+
+
+
+
+
+
+
+        int indexUpdate = rekanKerja
+            .indexWhere((element) => element.uid == listJson[0]["uid"]);
+        if(indexUpdate != -1){
+          setState(() {
+            rekanKerja[indexUpdate] = ClassRekanKerja(
+                listJson[0]["uid"],
+                listJson[0]["displayName"],
+                listJson[0]["email"],
+                listJson[0]["photoURL"],
+                listJson[0]["createDate"],
+                listJson[0]["lastSignIn"],
+                listJson[0]["jabatan"],
+                listJson[0]["referall"],
+                listJson[0]["selfReferall"],
+                listJson[0]["isNotifOn"],
+                listJson[0]["workStatus"],
+                listJson[0]["keteranganWorkStatus"],
+                listJson[0]["latitude"],
+                listJson[0]["longitude"],
+                listJson[0]["lastUpdate"]);
+          });
+        } else {
+          setState(() {
+            if(listJson[0]["uid"] != userLogin2.uid){
+              rekanKerja.add(ClassRekanKerja(
+                  listJson[0]["uid"],
+                  listJson[0]["displayName"],
+                  listJson[0]["email"],
+                  listJson[0]["photoURL"],
+                  listJson[0]["createDate"],
+                  listJson[0]["lastSignIn"],
+                  listJson[0]["jabatan"],
+                  listJson[0]["referall"],
+                  listJson[0]["selfReferall"],
+                  listJson[0]["isNotifOn"],
+                  listJson[0]["workStatus"],
+                  listJson[0]["keteranganWorkStatus"],
+                  listJson[0]["latitude"],
+                  listJson[0]["longitude"],
+                  listJson[0]["lastUpdate"]));
+            }
+
+          });
+
+        }
+      }
+      print(
+          'Change notification Dari Rekan Kerja Page:: topic is <${c[0].topic}>, payload is <-- $pt -->');
+      print('');
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(left: 12, right: 12, top: 24),
-      child: ListView.builder(
-          itemCount: rekanKerja.length,
-          itemBuilder: (context, i){
-        return GestureDetector(
-          onTap: (){
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => DetailrekanKerjaPage()),
-            );
-          },
-          child: Card(
-            child: Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        height: 24,
-                        width: 24,
-                        decoration: BoxDecoration(
-                            color: Colors.brown,
-                            borderRadius: BorderRadius.circular(24)),
+      child: isLoading == false
+          ? ListView.builder(
+              itemCount: rekanKerja.length,
+              itemBuilder: (context, i) {
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => DetailrekanKerjaPage(
+                                uid: rekanKerja[i].uid,
+                                displayName: rekanKerja[i].displayName,
+                                jabatan: rekanKerja[i].jabatan,
+                                photoURL: rekanKerja[i].photoURL,
+                                workStatus: rekanKerja[i].workStatus,
+                                lastUpdate: rekanKerja[i].lastUpdate,
+                              )),
+                    );
+                  },
+                  child: Card(
+                    child: Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                height: 24,
+                                width: 24,
+                                child: Image.network(rekanKerja[i].photoURL),
+                              ),
+                              SizedBox(width: 8),
+                              Text("${rekanKerja[i].displayName}")
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Container(
+                                height: 10,
+                                width: 10,
+                                decoration: BoxDecoration(
+                                    color: Colors.green,
+                                    borderRadius: BorderRadius.circular(20)),
+                              ),
+                              Text(
+                                " Device Status : Active",
+                                style: TextStyle(color: Colors.green),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Container(
+                                height: 10,
+                                width: 10,
+                                decoration: BoxDecoration(
+                                    color: Colors.green,
+                                    borderRadius: BorderRadius.circular(20)),
+                              ),
+                              Text(
+                                " Work Status : ${rekanKerja[i].workStatus}",
+                                style: TextStyle(color: Colors.green),
+                              )
+                            ],
+                          ),
+                          Text("Last Update : ${rekanKerja[i].lastUpdate}")
+                        ],
                       ),
-                      SizedBox(
-                        width: 8
-                      ),
-                      Text("${rekanKerja[i].displayName}")
-                    ],
+                    ),
                   ),
-                  Row(
-                    children: [
-                      Container(
-                        height: 10,
-                        width: 10,
-                        decoration: BoxDecoration(
-                            color: Colors.green,
-                            borderRadius: BorderRadius.circular(20)),
-                      ),
-                      Text(
-                        " Device Status : Active",
-                        style: TextStyle(color: Colors.green),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Container(
-                        height: 10,
-                        width: 10,
-                        decoration: BoxDecoration(
-                            color: Colors.green,
-                            borderRadius: BorderRadius.circular(20)),
-                      ),
-                      Text(
-                        " Work Status : ${rekanKerja[i].workStatus}",
-                        style: TextStyle(color: Colors.green),
-                      )
-                    ],
-                  ),
-                  Text("Last Update : 24 Sept 2021 10:36:20")
-                ],
-              ),
-            ),
-          ),
-        );
-      }),
+                );
+              })
+          : Center(child: CircularProgressIndicator()),
     );
   }
 }
