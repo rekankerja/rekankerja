@@ -183,6 +183,15 @@ UnSubs() async {
   client.unsubscribe(topic2);
   client.unsubscribe(topic3);
   client.unsubscribe(topic4);
+  client.unsubscribe(topic6);
+
+
+  pubtopic1 = 'RekanKerjaSetting/${userLogin2.referall}/${userLogin2.uid}'; /// PUBLISH ADMIN REKAN KERJA
+  pubtopic2 = 'RekanKerja/${userLogin2.referall}/${userLogin2.uid}'; /// PUBLISH DATA REKAN KERJA
+  pubtopic3 = 'RekanKerjaBuzzer/${userLogin2.referall}/${userLogin2.uid}'; /// PUBLISH DATA BUZZER
+  pubtopic4 = 'RekanKerjaBuzzerReport/${userLogin2.referall}/${userLogin2.uid}'; /// PUBLISH DATA BUZZER REPORT
+  pubtopic5 = 'RekanKerjaJabatan/${userLogin2.referall}/${userLogin2.uid}'; /// PUBLISH DATA BUZZER REPORT
+  client.disconnect();
 }
 
 /// The subscribed callback
@@ -291,7 +300,7 @@ class AuthenticationSignIn {
                 null);
 
             try {
-              await Future.delayed(const Duration(seconds: 2), () {
+              await Future.delayed(const Duration(milliseconds: 250), () {
                 Subs();
               }); // SUBs untuk MQTT
             } catch (er) {
@@ -384,7 +393,7 @@ class AuthenticationSignIn {
                 null);
 
             try {
-              await Future.delayed(const Duration(seconds: 2), () {
+              await Future.delayed(const Duration(milliseconds: 250), () {
                 Subs();
               }); // SUBs untuk MQTT
             } catch (er) {
@@ -545,7 +554,7 @@ class Authentication {
           // }
         }
         try {
-          await Future.delayed(const Duration(seconds: 2), () {
+          await Future.delayed(const Duration(milliseconds: 250), () {
             Subs();
           }); // SUBs untuk MQTT
         } catch (er) {
@@ -819,7 +828,9 @@ PublishData() async {
         isitabeluser[0].latitude,
         isitabeluser[0].longitude,
         date.toString()));
-    PublishSettingAdmin(json.encode(dataSettingAdmin));
+    if(userLogin2.jabatan == "ADMIN"){
+      PublishSettingAdmin(json.encode(dataSettingAdmin));
+    }
     PublishRekanKerja(json.encode(dataUserLogin));
   } catch (er) {
     print(er);

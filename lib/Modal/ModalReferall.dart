@@ -119,6 +119,9 @@ class _ModalReferallState extends State<ModalReferall> {
                   ));
                 }
               });
+              // if(inputReferall.text != userLogin2.selfReferall){
+              //
+              // }
             },
             child: Container(
               alignment: Alignment.center,

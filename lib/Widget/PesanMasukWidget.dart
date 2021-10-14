@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:mqtt_client/mqtt_client.dart';
+import 'package:ntp/ntp.dart';
 import 'package:rekankerja/Class/ClassBuzzer.dart';
 import 'package:rekankerja/Global/GlobalVariable.dart';
 
@@ -16,7 +20,53 @@ class _PesanMasukWidgetState extends State<PesanMasukWidget> {
   @override
   void initState() {
     getDataPesanMasuk();
+    ListenPerubahanData();
     super.initState();
+  }
+
+  ListenPerubahanData() {
+    client.updates.listen((List<MqttReceivedMessage<MqttMessage>> c) async {
+      final recMess = c[0].payload as MqttPublishMessage;
+      final pt =
+      MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
+
+      if (c[0].topic.startsWith("RekanKerjaBuzzer/${userLogin2.referall}")) {
+        List listJson = jsonDecode(pt) as List;
+
+        print(listJson);
+
+
+        if(listJson[0]["uidReceiver"] == userLogin2.uid){
+          DateTime date = await NTP.now();
+          setState(() {
+            print("masuk sini");
+            try{
+              listpesanmasuk..add(ClassBuzzer(
+                listJson[0]["uidSender"],
+                listJson[0]["displayNameSender"],
+                listJson[0]["photoURLSender"],
+                userLogin2.uid,
+                userLogin2.displayName,
+                userLogin2.photoURL,
+                null,
+                date.toString(),
+                listJson[0]["idMessageSender"],
+                listJson[0]["pesan"],
+                listJson[0]["isRead"],
+                null,
+                null,
+              ));
+            }
+            catch(er){
+              print(er);
+            }
+          });
+
+        }
+      }
+    });
+
+
   }
 
   getDataPesanMasuk() async {

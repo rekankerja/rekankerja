@@ -27,18 +27,38 @@ class _AkunPageState extends State<AkunPage> {
                 right: ScreenUtil().setWidth(8)),
             child: Column(
               children: [
-                Container(
-                    // height: ScreenUtil().setWidth(164),
-                    // width: ScreenUtil().setWidth(164),
-                    decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(36)),
-                    child: Image(
-                        image: NetworkImage(
-                          "${userLogin2.photoURL}",
-                        ),
-                        width: ScreenUtil().setWidth(128),
-                        height: ScreenUtil().setWidth(128))),
+                GestureDetector(
+                  onTap: () {
+                    showDialog<void>(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                              content: Column(children: [
+                                Text("App Version : $appVersion"),
+                                Text("Build Code : $buildCode")
+                              ]),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text('OK'),
+                                ),
+                              ],
+                            ));
+                  },
+                  child: Container(
+                      // height: ScreenUtil().setWidth(164),
+                      // width: ScreenUtil().setWidth(164),
+                      decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.circular(36)),
+                      child: Image(
+                          image: NetworkImage(
+                            "${userLogin2.photoURL}",
+                          ),
+                          width: ScreenUtil().setWidth(128),
+                          height: ScreenUtil().setWidth(128))),
+                ),
                 Text(
                   "${userLogin2.displayName}",
                   style: TextStyle(
@@ -59,10 +79,8 @@ class _AkunPageState extends State<AkunPage> {
                         isScrollControlled: true,
                         builder: (BuildContext context) {
                           return ModalReferall();
-                        }).whenComplete((){
-                          setState(() {
-
-                          });
+                        }).whenComplete(() {
+                      setState(() {});
                     });
                   },
                   child: Row(
@@ -109,16 +127,14 @@ class _AkunPageState extends State<AkunPage> {
                 GestureDetector(
                   onTap: () {
                     String _tempisNotifOn;
-                    if(userLogin2.isNotifOn == "TRUE"){
+                    if (userLogin2.isNotifOn == "TRUE") {
                       _tempisNotifOn = "FALSE";
                     } else {
                       _tempisNotifOn = "TRUE";
                     }
-                    SetJanganGanggu(_tempisNotifOn).then((value){
-                      if(value == "sukses"){
-                        setState(() {
-
-                        });
+                    SetJanganGanggu(_tempisNotifOn).then((value) {
+                      if (value == "sukses") {
+                        setState(() {});
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           duration: Duration(
                             seconds: 2,
@@ -131,13 +147,17 @@ class _AkunPageState extends State<AkunPage> {
                   },
                   child: Row(
                     children: [
-                       Image.asset(
-                         userLogin2.isNotifOn == "TRUE" ? "assets/ic_notifon.png" : "assets/ic_notifoff.png",
+                      Image.asset(
+                        userLogin2.isNotifOn == "TRUE"
+                            ? "assets/ic_notifon.png"
+                            : "assets/ic_notifoff.png",
                         width: ScreenUtil().setWidth(18),
                       ),
                       Container(
                         padding: EdgeInsets.all(8.0),
-                        child: Text(userLogin2.isNotifOn == "TRUE" ? "Aktifkan Jangan Ganggu" : "Non Aktifkan Jangan Ganggu"),
+                        child: Text(userLogin2.isNotifOn == "TRUE"
+                            ? "Aktifkan Jangan Ganggu"
+                            : "Non Aktifkan Jangan Ganggu"),
                       )
                     ],
                   ),
@@ -160,83 +180,85 @@ class _AkunPageState extends State<AkunPage> {
 
                 /// PEMBATAS ANTARA ADMIN DAN USER BIASA ////////////--------------------------------------------------------------
 
-               userLogin2.jabatan == "ADMIN" ? Column(
-                 children: [
-                   SizedBox(
-                     height: 18.0,
-                   ),
-                   Container(
-                     width: ScreenUtil.screenWidthDp,
-                     height: 1,
-                     color: Colors.grey,
-                   ),
-                   SizedBox(
-                     height: 18.0,
-                   ),
-                   GestureDetector(
-                     onTap: (){
-                       showModalBottomSheet<void>(
-                           context: context,
-                           isScrollControlled: true,
-                           builder: (BuildContext context) {
-                             return ModalSettingJamKerja();
-                           });
-                     },
-                     child: Row(
-                       children: [
-                         Image.asset(
-                           "assets/ic_bussiness.png",
-                           width: ScreenUtil().setWidth(18),
-                         ),
-                         Container(
-                           padding: EdgeInsets.all(8.0),
-                           child: Text("Atur Hari Dan Jam Kerja"),
-                         )
-                       ],
-                     ),
-                   ),
-                   SizedBox(
-                     height: 8.0,
-                   ),
-                   GestureDetector(
-                     onTap: (){
-                       showModalBottomSheet<void>(
-                           context: context,
-                           isScrollControlled: true,
-                           builder: (BuildContext context) {
-                             return ModalSetRefreshRate();
-                           });
-                     },
-                     child: Row(
-                       children: [
-                         Image.asset(
-                           "assets/ic_timer.png",
-                           width: ScreenUtil().setWidth(18),
-                         ),
-                         Container(
-                           padding: EdgeInsets.all(8.0),
-                           child: Text("Atur Refresh Rate"),
-                         )
-                       ],
-                     ),
-                   ),
-                   SizedBox(
-                     height: 8.0,
-                   ),
-                   Row(
-                     children: [
-                       Image.asset(
-                         "assets/ic_holiday.png",
-                         width: ScreenUtil().setWidth(18),
-                       ),
-                       Container(
-                         padding: EdgeInsets.all(8.0),
-                         child: Text("Atur hari Libur"),
-                       )
-                     ],
-                   ),
-                 ],
-               ) : Container(),
+                userLogin2.jabatan == "ADMIN"
+                    ? Column(
+                        children: [
+                          SizedBox(
+                            height: 18.0,
+                          ),
+                          Container(
+                            width: ScreenUtil.screenWidthDp,
+                            height: 1,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(
+                            height: 18.0,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              showModalBottomSheet<void>(
+                                  context: context,
+                                  isScrollControlled: true,
+                                  builder: (BuildContext context) {
+                                    return ModalSettingJamKerja();
+                                  });
+                            },
+                            child: Row(
+                              children: [
+                                Image.asset(
+                                  "assets/ic_bussiness.png",
+                                  width: ScreenUtil().setWidth(18),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Text("Atur Hari Dan Jam Kerja"),
+                                )
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 8.0,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              showModalBottomSheet<void>(
+                                  context: context,
+                                  isScrollControlled: true,
+                                  builder: (BuildContext context) {
+                                    return ModalSetRefreshRate();
+                                  });
+                            },
+                            child: Row(
+                              children: [
+                                Image.asset(
+                                  "assets/ic_timer.png",
+                                  width: ScreenUtil().setWidth(18),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Text("Atur Refresh Rate"),
+                                )
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 8.0,
+                          ),
+                          Row(
+                            children: [
+                              Image.asset(
+                                "assets/ic_holiday.png",
+                                width: ScreenUtil().setWidth(18),
+                              ),
+                              Container(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text("Atur hari Libur"),
+                              )
+                            ],
+                          ),
+                        ],
+                      )
+                    : Container(),
                 SizedBox(
                   height: 16.0,
                 ),

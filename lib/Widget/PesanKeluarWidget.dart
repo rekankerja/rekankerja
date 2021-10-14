@@ -21,7 +21,6 @@ class _PesanKeluarWidgetState extends State<PesanKeluarWidget> {
 
   getDataPesanKeluar() async {
     final responselog = await db.getLogSendPesan();
-
     for (int _i = 0; _i < responselog.length; _i++) {
       listpesankeluar.add(ClassBuzzer(
         responselog[_i].uid,
@@ -37,7 +36,6 @@ class _PesanKeluarWidgetState extends State<PesanKeluarWidget> {
           responselog[_i].isRead,
           responselog[_i].isBuzzerReceive,
           responselog[_i].isUseBuzzer,
-
           ));
     }
     setState(() {
