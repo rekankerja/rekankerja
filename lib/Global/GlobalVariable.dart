@@ -35,12 +35,15 @@ List<ClassSettingAdmin> settingAdminHariKerja = [];
 int urutanDBLokalUserLogin;
 Timer timer;
 
-String topic = 'RekanKerja/${userLogin2.referall}/#'; /// LIST GLOBAL REKAN KERJA
+String topic1 = 'RekanKerja/${userLogin2.referall}/#'; /// LIST GLOBAL REKAN KERJA
 String topic2 = 'RekanKerjaDetail/${userLogin2.referall}/#'; /// DETAIL REKAN KERJA
 String topic3= 'RekanKerjaBuzzer/${userLogin2.referall}/#'; /// BUZZER REKAN KERJA
 String topic4 = 'RekanKerjaSetting/${userLogin2.referall}/#'; /// SETTINGAN ADMIN REKAN KERJA
+String topic5 = 'RekanKerjaBuzzerReport/${userLogin2.referall}/#'; /// LISTEN DATA BUZZER REPORT
+String topic6 = 'RekanKerjaJabatan/${userLogin2.referall}/#'; /// LISTEN DATA BUZZER REPORT
 
-String pubtopic4 = 'RekanKerjaSetting/${userLogin2.referall}/${userLogin2.uid}'; /// PUBLISH ADMIN REKAN KERJA
-String pubtopic5 = 'RekanKerja/${userLogin2.referall}/${userLogin2.uid}'; /// PUBLISH DATA REKAN KERJA
-String pubtopic6 = 'RekanKerjaBuzzer/${userLogin2.referall}/${userLogin2.uid}'; /// PUBLISH DATA BUZZER
-String pubtopic7 = 'RekanKerjaBuzzerReport/${userLogin2.referall}/${userLogin2.uid}'; /// PUBLISH DATA BUZZER REPORT
+String pubtopic1 = 'RekanKerjaSetting/${userLogin2.referall}/${userLogin2.uid}'; /// PUBLISH ADMIN REKAN KERJA
+String pubtopic2 = 'RekanKerja/${userLogin2.referall}/${userLogin2.uid}'; /// PUBLISH DATA REKAN KERJA
+String pubtopic3 = 'RekanKerjaBuzzer/${userLogin2.referall}/${userLogin2.uid}'; /// PUBLISH DATA BUZZER
+String pubtopic4 = 'RekanKerjaBuzzerReport/${userLogin2.referall}/${userLogin2.uid}'; /// PUBLISH DATA BUZZER REPORT
+String pubtopic5 = 'RekanKerjaJabatan/${userLogin2.referall}/${userLogin2.uid}'; /// PUBLISH DATA BUZZER REPORT

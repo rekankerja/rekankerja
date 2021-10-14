@@ -58,11 +58,6 @@ class _RekanKerjaPageState extends State<RekanKerjaPage> {
         List listJson = jsonDecode(pt) as List;
 
 
-
-
-
-
-
         int indexUpdate = rekanKerja
             .indexWhere((element) => element.uid == listJson[0]["uid"]);
         if(indexUpdate != -1){

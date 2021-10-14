@@ -132,25 +132,40 @@ class LogSendPesanHelper {
   int id;
   String _uid;
   String _dateTimeSend;
+  String _dateTimeReceive;
+  String _isUseBuzzer;
   String _uidTarget;
+  String _displayNameTarget;
+  String _urlPhotoTarget;
   String _pesan;
+  String _isBuzzerReceive;
   String _isRead;
 
-  LogSendPesanHelper(this._uid, this._dateTimeSend, this._uidTarget,
-      this._pesan, this._isRead);
+  LogSendPesanHelper(this._uid, this._dateTimeSend, this._dateTimeReceive,
+      this._isUseBuzzer, this._uidTarget, this._displayNameTarget, this._urlPhotoTarget, this._pesan, this._isBuzzerReceive, this._isRead);
 
   LogSendPesanHelper.map(dynamic obj) {
     this._uid = obj["uid"];
     this._dateTimeSend = obj["dateTimeSend"];
+    this._dateTimeReceive = obj["dateTimeReceive"];
+    this._isUseBuzzer = obj["isUseBuzzer"];
     this._uidTarget = obj["uidTarget"];
+    this._displayNameTarget = obj["displayNameTarget"];
+    this._urlPhotoTarget = obj["urlPhotoTarget"];
     this._pesan = obj["pesan"];
+    this._isBuzzerReceive = obj["isBuzzerReceive"];
     this._isRead = obj["isRead"];
   }
 
   String get uid => _uid;
   String get dateTimeSend => _dateTimeSend;
+  String get dateTimeReceive => _dateTimeReceive;
+  String get isUseBuzzer => _isUseBuzzer;
   String get uidTarget => _uidTarget;
+  String get displayNameTarget => _displayNameTarget;
+  String get urlPhotoTarget => _urlPhotoTarget;
   String get pesan => _pesan;
+  String get isBuzzerReceive => _isBuzzerReceive;
   String get isRead => _isRead;
 
   Map<String, dynamic> toMap() {
@@ -158,8 +173,13 @@ class LogSendPesanHelper {
 
     map['uid'] = _uid;
     map['dateTimeSend'] = _dateTimeSend;
+    map['dateTimeReceive'] = _dateTimeReceive;
+    map['isUseBuzzer'] = _isUseBuzzer;
     map['uidTarget'] = _uidTarget;
+    map['displayNameTarget'] = _displayNameTarget;
+    map['urlPhotoTarget'] = _urlPhotoTarget;
     map['pesan'] = _pesan;
+    map['isBuzzerReceive'] = _isBuzzerReceive;
     map['isRead'] = _isRead;
 
     return map;
@@ -177,11 +197,19 @@ class LogReceivePesan {
   String _uidSender;
   String _displayNameSender;
   String _pesan;
-  String _urlPhoto;
+  String _urlPhotoSender;
+  int _idMessageSender;
   String _isRead;
 
-  LogReceivePesan(this._uid, this._dateTimeReceive, this._uidSender,
-      this._displayNameSender, this._pesan, this._urlPhoto, this._isRead);
+  LogReceivePesan(
+      this._uid,
+      this._dateTimeReceive,
+      this._uidSender,
+      this._displayNameSender,
+      this._pesan,
+      this._urlPhotoSender,
+      this._idMessageSender,
+      this._isRead);
 
   LogReceivePesan.map(dynamic obj) {
     this._uid = obj["uid"];
@@ -189,7 +217,8 @@ class LogReceivePesan {
     this._uidSender = obj["uidSender"];
     this._displayNameSender = obj["displayNameSender"];
     this._pesan = obj["pesan"];
-    this._urlPhoto = obj["urlPhoto"];
+    this._urlPhotoSender = obj["urlPhotoSender"];
+    this._idMessageSender = obj["idMessageSender"];
     this._isRead = obj["isRead"];
   }
 
@@ -198,7 +227,8 @@ class LogReceivePesan {
   String get uidSender => _uidSender;
   String get displayNameSender => _displayNameSender;
   String get pesan => _pesan;
-  String get urlPhoto => _urlPhoto;
+  String get urlPhotoSender => _urlPhotoSender;
+  int get idMessageSender => _idMessageSender;
   String get isRead => _isRead;
 
   Map<String, dynamic> toMap() {
@@ -209,7 +239,8 @@ class LogReceivePesan {
     map['uidSender'] = _uidSender;
     map['displayNameSender'] = _displayNameSender;
     map['pesan'] = _pesan;
-    map['urlPhoto'] = _urlPhoto;
+    map['urlPhotoSender'] = _urlPhotoSender;
+    map['idMessageSender'] = _idMessageSender;
     map['isRead'] = _isRead;
 
     return map;
@@ -279,20 +310,20 @@ class RekanKerjaHelper {
   String _lastUpdate;
 
   RekanKerjaHelper(
-      this._uid,
-      this._email,
-      this._displayName,
-      this._urlPhoto,
-      this._jabatan,
-      this._isNotifOn,
-      this._workStatus,
-      this._keteranganWorkStatus,
-      this._latitude,
-      this._longitude,
-      this._alatConnect,
-      this._lastLogin,
-      this._lastUpdate,
-      );
+    this._uid,
+    this._email,
+    this._displayName,
+    this._urlPhoto,
+    this._jabatan,
+    this._isNotifOn,
+    this._workStatus,
+    this._keteranganWorkStatus,
+    this._latitude,
+    this._longitude,
+    this._alatConnect,
+    this._lastLogin,
+    this._lastUpdate,
+  );
 
   RekanKerjaHelper.map(dynamic obj) {
     this._uid = obj["uid"];

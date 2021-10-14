@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:rekankerja/Widget/PesanKeluarWidget.dart';
+import 'package:rekankerja/Widget/PesanMasukWidget.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -21,10 +23,10 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             title: const Text('Pesan'),
           ),
-          body: const TabBarView(
+          body: TabBarView(
             children: [
-              Icon(Icons.directions_car),
-              Icon(Icons.directions_transit),
+              PesanMasukWidget(),
+              PesanKeluarWidget()
             ],
           ),
         ),

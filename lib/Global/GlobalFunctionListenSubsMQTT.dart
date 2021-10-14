@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:ntp/ntp.dart';
 import 'package:rekankerja/Class/ClassRekanKerja.dart';
 import 'package:rekankerja/DbLokal/ModelDbHelper.dart';
 
 import 'GlobalFunction.dart';
+import 'GlobalFunctionPublishMQTT.dart';
 import 'GlobalVariable.dart';
 
 ListenSettingAdmin(data) async {
@@ -130,6 +132,82 @@ ListenRekanKerja(data) async {
     await db.saveRekanKerja(rekankerjahelper);
 
     }
+}
+
+ListenRekanKerjaJabatan(data) async {
+  //List _data1 = data.toList();
+  List _data = json.decode(data);
+    if(_data[0] == userLogin2.uid){
+
+      DateTime date = await NTP.now();
+      userLogin2.jabatan = _data[1];
+
+      /// Update ke DB
+      final responselog = await db.getUser();
+
+      print(urutanDBLokalUserLogin);
+
+      var userhelper = UserHelper(
+          responselog[urutanDBLokalUserLogin].uid,
+          responselog[urutanDBLokalUserLogin].email,
+          responselog[urutanDBLokalUserLogin].displayName,
+          responselog[urutanDBLokalUserLogin].urlPhoto,
+          responselog[urutanDBLokalUserLogin].lastLogin,
+          _data[1],
+          responselog[urutanDBLokalUserLogin].referall,
+          responselog[urutanDBLokalUserLogin].selfReferall,
+          responselog[urutanDBLokalUserLogin].isNotifOn,
+          responselog[urutanDBLokalUserLogin].workStatus,
+          responselog[urutanDBLokalUserLogin].keteranganWorkStatus,
+          responselog[urutanDBLokalUserLogin].latitude,
+          responselog[urutanDBLokalUserLogin].longitude,
+          "$appVersion",
+          "$buildCode");
+      userhelper.setUserId(responselog[urutanDBLokalUserLogin].id);
+      await db.updateUser(userhelper);
+
+      /// FORCE UNTUK PUBLISH DATA LAGI
+      List<ClassRekanKerja> _temp = [];
+      _temp.add(ClassRekanKerja(
+          responselog[urutanDBLokalUserLogin].uid,
+          responselog[urutanDBLokalUserLogin].displayName,
+          responselog[urutanDBLokalUserLogin].email,
+          responselog[urutanDBLokalUserLogin].urlPhoto,
+          null,
+          responselog[urutanDBLokalUserLogin].lastLogin,
+          _data[1],
+          responselog[urutanDBLokalUserLogin].referall,
+          responselog[urutanDBLokalUserLogin].selfReferall,
+          responselog[urutanDBLokalUserLogin].isNotifOn,
+          responselog[urutanDBLokalUserLogin].workStatus,
+          responselog[urutanDBLokalUserLogin].keteranganWorkStatus,
+          responselog[urutanDBLokalUserLogin].latitude,
+          responselog[urutanDBLokalUserLogin].longitude,
+          date.toString()));
+      PublishRekanKerja(json.encode(_temp));
+
+    }
+}
+
+ListenRekanKerjaBuzzer(data) async {
+
+  List listJson = jsonDecode(data) as List;
+  DateTime date = await NTP.now();
+
+  if(listJson[0]["uidReceiver"] == userLogin2.uid){
+    var receivepesanhelper = LogReceivePesan(
+        listJson[0]["uidReceiver"],
+        date.toString(),
+        listJson[0]["uidSender"],
+        listJson[0]["displayNameSender"],
+        listJson[0]["pesan"],
+        listJson[0]["photoURLSender"],
+        listJson[0]["idMessageSender"],
+        "FALSE"
+    );
+    await db.saveReceivePesan(receivepesanhelper);
+  }
+
 
 
 }

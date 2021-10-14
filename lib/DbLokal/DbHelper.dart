@@ -55,13 +55,13 @@ class DBHelper {
     await db.execute(
         "CREATE TABLE logdisconnect(id INTEGER PRIMARY KEY, uid TEXT, dateTimeDisconnect TEXT, keterangan TEXT)");
 
-    /// bikin database untuk logBuzzer db -- INI UNTUK MENGIRIM PESAN
+    /// bikin database untuk logSendPesan db -- INI UNTUK MENGIRIM PESAN
     await db.execute(
-        "CREATE TABLE logsendpesan(id INTEGER PRIMARY KEY, uid TEXT, dateTimeSend TEXT, uidTarget TEXT, pesan TEXT, isRead TEXT)");
+        "CREATE TABLE logsendpesan(id INTEGER PRIMARY KEY, uid TEXT, dateTimeSend TEXT, dateTimeReceive TEXT, isUseBuzzer TEXT, uidTarget TEXT, displayNameTarget TEXT, urlPhotoTarget TEXT, pesan TEXT, isBuzzerReceive TEXT, isRead TEXT)");
 
-    /// bikin database untuk pesan db -- INI SAAT MENERIMA PESAN
+    /// bikin database untuk logReceivepesan db -- INI SAAT MENERIMA PESAN
     await db.execute(
-        "CREATE TABLE logreceivepesan(id INTEGER PRIMARY KEY, uid TEXT, dateTimeReceive TEXT, uidSender TEXT, displayNameSender TEXT, pesan TEXT, urlPhoto TEXT, isRead TEXT)");
+        "CREATE TABLE logreceivepesan(id INTEGER PRIMARY KEY, uid TEXT, dateTimeReceive TEXT, uidSender TEXT, displayNameSender TEXT, pesan TEXT, urlPhotoSender TEXT, idMessageSender INTEGER, isRead TEXT)");
 
     /// bikin database untuk pesan db -- INI UNTUK SETTING ADMIN
     await db.execute(
@@ -202,14 +202,23 @@ class DBHelper {
     return res > 0 ? true : false;
   }
 
-  Future<List<LogSendPesanHelper>> getLogBuzzer() async {
+  Future<List<LogSendPesanHelper>> getLogSendPesan() async {
     var dbClient = await db;
     List<Map> list = await dbClient
-        .rawQuery("Select * from logbuzzer where uid = ${userLogin2.uid}");
+        .rawQuery("Select * from logsendpesan where uid = '${userLogin2.uid}'");
     List<LogSendPesanHelper> datalogsendpesan = new List();
     for (int i = 0; i < list.length; i++) {
-      var data = new LogSendPesanHelper(list[i]['uid'], list[i]['dateTimeSend'],
-          list[i]['uidTarget'], list[i]['pesan'], list[i]['isRead']);
+      var data = new LogSendPesanHelper(
+          list[i]['uid'],
+          list[i]['dateTimeSend'],
+          list[i]['dateTimeReceive'],
+          list[i]['isUseBuzzer'],
+          list[i]['uidTarget'],
+          list[i]['displayNameTarget'],
+          list[i]['urlPhotoTarget'],
+          list[i]['pesan'],
+          list[i]["isBuzzerReceive"],
+          list[i]['isRead']);
       data.setLogSendPesanId(list[i]['id']);
       datalogsendpesan.add(data);
     }
@@ -247,7 +256,7 @@ class DBHelper {
   Future<List<LogReceivePesan>> getReceivePesan() async {
     var dbClient = await db;
     List<Map> list = await dbClient.rawQuery(
-        "Select * from logreceivepesan where uid = ${userLogin2.uid}");
+        "Select * from logreceivepesan where uid = '${userLogin2.uid}'");
     List<LogReceivePesan> datalogreceivepesan = new List();
     for (int i = 0; i < list.length; i++) {
       var data = new LogReceivePesan(
@@ -256,7 +265,8 @@ class DBHelper {
           list[i]['uidSender'],
           list[i]['displayNameSender'],
           list[i]['pesan'],
-          list[i]['urlPhoto'],
+          list[i]['urlPhotoSender'],
+          list[i]['idMessageSender'],
           list[i]['isRead']);
       data.setLogReceivePesanId(list[i]['id']);
       datalogreceivepesan.add(data);

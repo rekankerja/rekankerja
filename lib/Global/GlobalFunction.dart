@@ -104,10 +104,11 @@ Future<int> Subs() async {
 
   /// Ok, lets try a subscription
 
-  client.subscribe(topic, MqttQos.atMostOnce);
+  client.subscribe(topic1, MqttQos.atMostOnce);
   client.subscribe(topic2, MqttQos.atMostOnce);
   client.subscribe(topic3, MqttQos.atMostOnce);
   client.subscribe(topic4, MqttQos.atMostOnce);
+  client.subscribe(topic6, MqttQos.atMostOnce);
 
   /// The client has a change notifier object(see the Observable class) which we then listen to to get
   /// notifications of published updates to each subscribed topic.
@@ -125,7 +126,13 @@ Future<int> Subs() async {
       ListenSettingAdmin(pt);
     } else if (c[0].topic.startsWith("RekanKerja/${userLogin2.referall}")) {
       ListenRekanKerja(pt);
+    } else if (c[0].topic.startsWith("RekanKerjaJabatan/${userLogin2.referall}")) {
+      ListenRekanKerjaJabatan(pt);
+    } else if (c[0].topic.startsWith("RekanKerjaBuzzer/${userLogin2.referall}")) {
+      ListenRekanKerjaBuzzer(pt);
     }
+
+
     print(
         'Change notification:: topic is <${c[0].topic}>, payload is <-- $pt -->');
     print('');
@@ -172,7 +179,7 @@ Future<int> Subs() async {
 
 UnSubs() async {
   print('EXAMPLE::Unsubscribing');
-  client.unsubscribe(topic);
+  client.unsubscribe(topic1);
   client.unsubscribe(topic2);
   client.unsubscribe(topic3);
   client.unsubscribe(topic4);
@@ -642,7 +649,7 @@ Future<String> SetReferall(referall) async {
     userLogin2.referall = referall; // UPDATE untuk userLogin
     userLogin2.jabatan = "USER"; // Update untuk userlogin menjadi jabatan ADMIN
 
-    topic = 'RekanKerja/${userLogin2.referall}/#';
+    topic1 = 'RekanKerja/${userLogin2.referall}/#';
 
     /// LIST GLOBAL REKAN KERJA
     topic2 = 'RekanKerjaDetail/${userLogin2.referall}/#';
