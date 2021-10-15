@@ -1,5 +1,6 @@
 import 'dart:isolate';
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
+import 'package:rekankerja/Global/GlobalFunction.dart';
 
 class FirstTaskHandler implements TaskHandler {
   int updateCount = 0;
@@ -8,13 +9,13 @@ class FirstTaskHandler implements TaskHandler {
   Future<void> onStart(DateTime timestamp, SendPort sendPort) async {
     // You can use the getData function to get the data you saved.
     final customData = await FlutterForegroundTask.getData<String>(key: 'customData');
-    print('customData: $customData');
+    //print('customData: $customData');
   }
 
   @override
   Future<void> onEvent(DateTime timestamp, SendPort sendPort) async {
     FlutterForegroundTask.updateService(
-        notificationTitle: 'FirstTaskHandler',
+        notificationTitle: 'Rekan Kerja',
         notificationText: timestamp.toString());
     //callback: updateCount >= 10 ? updateCallback : null);
 
@@ -22,6 +23,7 @@ class FirstTaskHandler implements TaskHandler {
     sendPort?.send(timestamp);
     sendPort?.send(updateCount);
     print("Something " + DateTime.now().toString());
+    TestForeGround();
 
     updateCount++;
   }

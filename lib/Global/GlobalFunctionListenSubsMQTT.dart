@@ -11,7 +11,7 @@ import 'GlobalVariable.dart';
 ListenSettingAdmin(data) async {
   List listJson = jsonDecode(data) as List;
   timer.cancel();
-  TimerPublishSettingAdmin();
+
 
   var _settinghelper = SettingAdmin(
       "HARI KERJA",
@@ -61,6 +61,10 @@ ListenSettingAdmin(data) async {
       listJson[7]["attribut4"]);
   _settinghelper.setSettingId(8);
   await db.updateSettingAdmin(_settinghelper);
+
+
+  TimerPublishSettingAdmin();
+
 }
 
 ListenRekanKerja(data) async {

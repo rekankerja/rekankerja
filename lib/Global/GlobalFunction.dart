@@ -13,7 +13,7 @@ import 'package:rekankerja/Class/ClassUserLogin.dart';
 import 'package:rekankerja/DbLokal/DbHelper.dart';
 import 'package:rekankerja/DbLokal/ModelDbHelper.dart';
 import 'package:rekankerja/screen/HomePage.dart';
-
+import 'package:http/http.dart' as http;
 import 'GlobalFunctionListenSubsMQTT.dart';
 import 'GlobalFunctionPublishMQTT.dart';
 import 'GlobalVariable.dart';
@@ -300,9 +300,10 @@ class AuthenticationSignIn {
                 null);
 
             try {
-              await Future.delayed(const Duration(milliseconds: 250), () {
-                Subs();
-              }); // SUBs untuk MQTT
+              // await Future.delayed(const Duration(milliseconds: 250), () {
+              //   Subs();
+              // }); // SUBs untuk MQTT
+              Subs();
             } catch (er) {
               print(er);
             }
@@ -393,9 +394,10 @@ class AuthenticationSignIn {
                 null);
 
             try {
-              await Future.delayed(const Duration(milliseconds: 250), () {
-                Subs();
-              }); // SUBs untuk MQTT
+              // await Future.delayed(const Duration(milliseconds: 250), () {
+              //   Subs();
+              // }); // SUBs untuk MQTT
+              Subs();
             } catch (er) {
               print(er);
             }
@@ -554,9 +556,10 @@ class Authentication {
           // }
         }
         try {
-          await Future.delayed(const Duration(milliseconds: 250), () {
-            Subs();
-          }); // SUBs untuk MQTT
+          // await Future.delayed(const Duration(milliseconds: 250), () {
+          //   Subs();
+          // }); // SUBs untuk MQTT
+          Subs();
         } catch (er) {
           print(er);
         }
@@ -637,13 +640,14 @@ Future<String> SetReferall(referall) async {
 
     print(urutanDBLokalUserLogin);
 
+
     var userhelper = UserHelper(
         responselog[urutanDBLokalUserLogin].uid,
         responselog[urutanDBLokalUserLogin].email,
         responselog[urutanDBLokalUserLogin].displayName,
         responselog[urutanDBLokalUserLogin].urlPhoto,
         responselog[urutanDBLokalUserLogin].lastLogin,
-        "USER",
+        userLogin2.selfReferall == referall ? "ADMIN" : "USER",
         "$referall",
         responselog[urutanDBLokalUserLogin].selfReferall,
         responselog[urutanDBLokalUserLogin].isNotifOn,
@@ -656,7 +660,7 @@ Future<String> SetReferall(referall) async {
     userhelper.setUserId(responselog[urutanDBLokalUserLogin].id);
     await db.updateUser(userhelper);
     userLogin2.referall = referall; // UPDATE untuk userLogin
-    userLogin2.jabatan = "USER"; // Update untuk userlogin menjadi jabatan ADMIN
+    userLogin2.jabatan = userLogin2.selfReferall == referall ? "ADMIN" : "USER" ;// Update untuk userlogin menjadi jabatan ADMIN
 
     topic1 = 'RekanKerja/${userLogin2.referall}/#';
 
@@ -795,6 +799,32 @@ TimerPublishSettingAdmin() async {
   });
 }
 
+TestForeGround() async {
+  // Map<String, dynamic> backlogBody = new Map<String, dynamic>();
+  // backlogBody['PerusahaanId'] = '3';
+  // backlogBody['PerusahaanGuid'] = 'b085b8ab-0cd7-4197-9943-fcb0cf12d4d3';
+  // backlogBody['IdBacklog'] = '1';
+  // backlogBody['AuthenId'] = '19';
+  //
+  // http.Response response =
+  //     await http.post(Uri.parse("http://monstercode.ip-dynamic.com:8082/Odata/TransProjectBacklogV2/DeleteBacklog"),
+  //     headers: {
+  //       "Accept": "Application/x-www-form-urlencoded",
+  //       "Authorization": "Bearer "
+  //     },
+  //     body: backlogBody);
+  // if (response.statusCode == 200) {
+  //   print("true");
+  //   return true;
+  // } else {
+  //   print(response.statusCode);
+  //   print("false");
+  //   return false;
+  // }
+
+
+}
+
 PublishData() async {
   final isitabelsetting = await db.getSettingAdmin();
   final isitabeluser = await db.getUser();
@@ -828,7 +858,7 @@ PublishData() async {
         isitabeluser[0].latitude,
         isitabeluser[0].longitude,
         date.toString()));
-    if(userLogin2.jabatan == "ADMIN"){
+    if(isitabeluser[0].jabatan == "ADMIN"){
       PublishSettingAdmin(json.encode(dataSettingAdmin));
     }
     PublishRekanKerja(json.encode(dataUserLogin));

@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:rekankerja/Class/ClassSettingAdmin.dart';
 import 'package:rekankerja/Global/GlobalFunction.dart';
 import 'package:rekankerja/Global/GlobalFunctionForeground.dart';
 import 'package:rekankerja/utils/utilityscreen.dart';
@@ -32,17 +33,29 @@ class _BerandaPageState extends State<BerandaPage> with WidgetsBindingObserver {
 
   @override
   void initState() {
+
     _getPermission();
-    _initForegroundTask();
-    startForegroundTask();
+   //_initForegroundTask();
+    //startForegroundTask();
     WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
 
-  void _initForegroundTask() {
+  _initForegroundTask() async {
+
+    // final isitabelsetting = await db.getSettingAdmin();
+    //
+    // refreshRate = ClassSettingAdmin(
+    //     isitabelsetting[7].setting,
+    //     isitabelsetting[7].attribut1,
+    //     isitabelsetting[7].attribut2,
+    //     isitabelsetting[7].attribut3,
+    //     isitabelsetting[7].attribut4);
+
+    print("==============${refreshRate.attribut1}");
     FlutterForegroundTask.init(
       androidNotificationOptions: AndroidNotificationOptions(
-        channelId: 'notifId',
+        channelId: 'rekanKerjaNotifId',
         channelName: 'Rakan Kerja',
         channelDescription: 'Stay Active and Keep Production',
         channelImportance: NotificationChannelImportance.LOW,
@@ -58,7 +71,8 @@ class _BerandaPageState extends State<BerandaPage> with WidgetsBindingObserver {
         playSound: false,
       ),
       foregroundTaskOptions: ForegroundTaskOptions(
-        interval:  int.parse(refreshRate.attribut1) * 1000,
+        //interval:  int.parse(refreshRate.attribut1) * 1000,
+        interval : 15000,
         autoRunOnBoot: true,
       ),
       printDevLog: true,
@@ -156,6 +170,8 @@ class _BerandaPageState extends State<BerandaPage> with WidgetsBindingObserver {
     print(state);
     if (state == AppLifecycleState.resumed) {
       _controller.setMapStyle("[]");
+    } else if(state == AppLifecycleState.detached){
+      PublishData();
     }
   }
 
