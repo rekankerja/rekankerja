@@ -49,7 +49,7 @@ class _DetailrekanKerjaPageState extends State<DetailrekanKerjaPage> {
             widget.jabatan = listJson[0]["jabatan"];
             widget.workStatus = listJson[0]["workStatus"];
             widget.lastUpdate = listJson[0]["lastUpdate"];
-          });
+          }); 
         }
       }
       print(
@@ -127,12 +127,12 @@ class _DetailrekanKerjaPageState extends State<DetailrekanKerjaPage> {
                             height: 10,
                             width: 10,
                             decoration: BoxDecoration(
-                                color: Colors.green,
+                                color: widget.workStatus == "AKTIF" ? Colors.green : widget.workStatus == "ISTIRAHAT" ? Colors.yellow : Colors.red,
                                 borderRadius: BorderRadius.circular(20)),
                           ),
                           Text(
                             " ${widget.workStatus}",
-                            style: TextStyle(color: Colors.green),
+                            style: TextStyle(color: widget.workStatus == "AKTIF" ? Colors.green : widget.workStatus == "ISTIRAHAT" ? Colors.yellow : Colors.red),
                           )
                         ],
                       ),

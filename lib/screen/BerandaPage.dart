@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:typed_data';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:mqtt_client/mqtt_client.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:rekankerja/Class/ClassSettingAdmin.dart';
 import 'package:rekankerja/Global/GlobalFunction.dart';
@@ -15,8 +17,6 @@ import '../Global/GlobalVariable.dart';
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import '../main.dart';
 
-
-
 class BerandaPage extends StatefulWidget {
   @override
   _BerandaPageState createState() => _BerandaPageState();
@@ -26,23 +26,147 @@ class _BerandaPageState extends State<BerandaPage> with WidgetsBindingObserver {
   StreamSubscription _locationSubscription;
   Marker marker;
   Marker marker2;
+  List<Marker> listOfMarker = [];
   GoogleMapController _controller;
   Location _locationTracker = Location();
   bool firstTime = true;
 
-
   @override
   void initState() {
-
     _getPermission();
-   //_initForegroundTask();
+    //_initForegroundTask();
     //startForegroundTask();
     WidgetsBinding.instance.addObserver(this);
+    addMarker();
     super.initState();
   }
 
-  _initForegroundTask() async {
+  addMarker() async {
+    ByteData byteData =
+        await DefaultAssetBundle.of(context).load("assets/ic_mapmarker.png");
 
+    client.updates.listen((List<MqttReceivedMessage<MqttMessage>> c) {
+      final recMess = c[0].payload as MqttPublishMessage;
+      final pt =
+          MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
+
+      if (c[0].topic.startsWith("RekanKerja/${userLogin2.referall}")) {
+        List listJson = jsonDecode(pt) as List;
+        int indexUpdate = listOfMarker
+            .indexWhere((element) => element.markerId == listJson[0]["uid"]);
+        if (indexUpdate != -1) {
+          setState(() {
+            listOfMarker[indexUpdate] = Marker(
+                infoWindow: InfoWindow(
+                  title: "${listJson[0]["displayName"]}",
+                  onTap: () {
+                    showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                              title: Text('Info'),
+                              content: Container(
+                                height: 120,
+                                child: Column(
+                                  children: [
+                                    Text('${listJson[0]["displayName"]}'),
+                                    Text('${listJson[0]["workStatus"]}'),
+                                  ],
+                                ),
+                              ),
+                            ));
+                  },
+                ),
+
+                // onTap: (){
+                //   showDialog<String>(
+                //       context: context,
+                //       builder: (BuildContext context) => AlertDialog(
+                //     title: Text('Info'),
+                //     content: Container(
+                //       height: 120,
+                //       child: Column(
+                //         children: [
+                //           Text('${listJson[0]["displayName"]}'),
+                //           Text('${listJson[0]["jabatan"]}'),
+                //         ],
+                //       ),
+                //     ),
+                //   ));
+                // },
+                markerId: MarkerId(listJson[0]["uid"]),
+                position:
+                    LatLng(listJson[0]["latitude"], listJson[0]["longitude"]),
+                //rotation: newLocalData.heading,
+                draggable: false,
+                zIndex: 2,
+                flat: true,
+                anchor: Offset(0.5, 0.5),
+                icon:
+                    BitmapDescriptor.fromBytes(byteData.buffer.asUint8List()));
+          });
+        } else {
+          setState(() {
+            try {
+              listOfMarker.add(Marker(
+                  infoWindow:
+                      InfoWindow(title: "${listJson[0]["displayName"]}",
+                        onTap: () {
+                          showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                title: Text('Info'),
+                                content: Container(
+                                  height: 120,
+                                  child: Column(
+                                    children: [
+                                      Text('${listJson[0]["displayName"]}'),
+                                      Text('${listJson[0]["workStatus"]}'),
+                                    ],
+                                  ),
+                                ),
+                              ));
+                        },
+                      ),
+
+                  // onTap: (){
+                  //   showDialog<String>(
+                  //       context: context,
+                  //       builder: (BuildContext context) => AlertDialog(
+                  //         title: Text('Info'),
+                  //         content: Container(
+                  //           height: 120,
+                  //           child: Column(
+                  //             children: [
+                  //               Text('${listJson[0]["displayName"]}'),
+                  //               Text('${listJson[0]["jabatan"]}'),
+                  //             ],
+                  //           ),
+                  //         ),
+                  //       ));
+                  // },
+                  markerId: MarkerId(listJson[0]["uid"]),
+                  position: LatLng(double.parse(listJson[0]["latitude"]),
+                      double.parse(listJson[0]["longitude"])),
+                  //rotation: newLocalData.heading,
+                  draggable: false,
+                  zIndex: 2,
+                  flat: true,
+                  anchor: Offset(0.5, 0.5),
+                  icon: BitmapDescriptor.fromBytes(
+                      byteData.buffer.asUint8List())));
+            } catch (er) {
+              print(er);
+            }
+          });
+        }
+      }
+      print(
+          'Change notification Dari Rekan Kerja Page:: topic is <${c[0].topic}>, payload is <-- $pt -->');
+      print('');
+    });
+  }
+
+  _initForegroundTask() async {
     // final isitabelsetting = await db.getSettingAdmin();
     //
     // refreshRate = ClassSettingAdmin(
@@ -72,7 +196,7 @@ class _BerandaPageState extends State<BerandaPage> with WidgetsBindingObserver {
       ),
       foregroundTaskOptions: ForegroundTaskOptions(
         //interval:  int.parse(refreshRate.attribut1) * 1000,
-        interval : 15000,
+        interval: 15000,
         autoRunOnBoot: true,
       ),
       printDevLog: true,
@@ -106,26 +230,26 @@ class _BerandaPageState extends State<BerandaPage> with WidgetsBindingObserver {
 
     SetGPS(newLocalData.latitude.toString(), newLocalData.longitude.toString());
 
-    setState(() {
-      marker2 = Marker(
-          markerId: MarkerId("cust"),
-          position: LatLng(-7.2341767, 112.7101233),
-          //rotation: newLocalData.heading,
-          draggable: false,
-          zIndex: 2,
-          flat: true,
-          anchor: Offset(0.5, 0.5),
-          icon: BitmapDescriptor.fromBytes(imageData));
-      marker = Marker(
-          markerId: MarkerId("home"),
-          position: latlng,
-          //rotation: newLocalData.heading, // INI SUPAYA BISA DIPUTAR
-          draggable: false,
-          zIndex: 2,
-          flat: true,
-          anchor: Offset(0.5, 0.5),
-          icon: BitmapDescriptor.fromBytes(imageData));
-    });
+    // setState(() {
+    //   marker2 = Marker(
+    //       markerId: MarkerId("cust"),
+    //       position: LatLng(-7.2341767, 112.7101233),
+    //       //rotation: newLocalData.heading,
+    //       draggable: false,
+    //       zIndex: 2,
+    //       flat: true,
+    //       anchor: Offset(0.5, 0.5),
+    //       icon: BitmapDescriptor.fromBytes(imageData));
+    //   marker = Marker(
+    //       markerId: MarkerId("home"),
+    //       position: latlng,
+    //       //rotation: newLocalData.heading, // INI SUPAYA BISA DIPUTAR
+    //       draggable: false,
+    //       zIndex: 2,
+    //       flat: true,
+    //       anchor: Offset(0.5, 0.5),
+    //       icon: BitmapDescriptor.fromBytes(imageData));
+    // });
   }
 
   void getCurrentLocation() async {
@@ -149,7 +273,6 @@ class _BerandaPageState extends State<BerandaPage> with WidgetsBindingObserver {
                     zoom: 18.00)));
             firstTime = false;
           }
-
           updateMarkerAndCircle(newLocalData, imageData);
         }
       });
@@ -170,7 +293,7 @@ class _BerandaPageState extends State<BerandaPage> with WidgetsBindingObserver {
     print(state);
     if (state == AppLifecycleState.resumed) {
       _controller.setMapStyle("[]");
-    } else if(state == AppLifecycleState.detached){
+    } else if (state == AppLifecycleState.detached) {
       PublishData();
     }
   }
@@ -195,7 +318,7 @@ class _BerandaPageState extends State<BerandaPage> with WidgetsBindingObserver {
             child: GoogleMap(
               mapType: MapType.normal,
               initialCameraPosition: initialLocation,
-              markers: Set.of((marker != null) ? [marker, marker2] : []),
+              markers: Set.of((listOfMarker != null) ? listOfMarker : []),
               // polylines: Set<Polyline>.of(polylines.values),
               //circles: Set.of((circle != null) ? [circle] : []),
               onMapCreated: (GoogleMapController controller) {
@@ -206,16 +329,23 @@ class _BerandaPageState extends State<BerandaPage> with WidgetsBindingObserver {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
-              child: Row(
-                children: [
-                  Image.asset(userLogin2.isNotifOn == "TRUE" ? "assets/ic_notifon.png" : "assets/ic_notifoff.png", width: ScreenUtil().setWidth(24)),
-                  SizedBox(
-                    width: ScreenUtil().setWidth(4)
-                  ),
-                  Text(userLogin2.isNotifOn == "TRUE" ? "Notifikasi Aktif" : "Notifikasi Non Aktif")
-                ],
-              )
-            ),
+                child: Row(
+              children: [
+                Image.asset(
+                    userLogin2 != null
+                        ? userLogin2.isNotifOn == "TRUE"
+                            ? "assets/ic_notifon.png"
+                            : "assets/ic_notifoff.png"
+                        : "assets/ic_notifoff.png",
+                    width: ScreenUtil().setWidth(24)),
+                SizedBox(width: ScreenUtil().setWidth(4)),
+                Text(userLogin2 != null
+                    ? userLogin2.isNotifOn == "TRUE"
+                        ? "Notifikasi Aktif"
+                        : "Notifikasi Non Aktif"
+                    : "Notifikasi Non Aktif")
+              ],
+            )),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -239,7 +369,9 @@ class _BerandaPageState extends State<BerandaPage> with WidgetsBindingObserver {
                           ),
                           Text(
                             " Connected",
-                            style: TextStyle(color: Colors.green, fontSize: ScreenUtil().setSp(12),
+                            style: TextStyle(
+                                color: Colors.green,
+                                fontSize: ScreenUtil().setSp(12),
                                 fontWeight: FontWeight.w700),
                           )
                         ],
@@ -293,8 +425,8 @@ class _BerandaPageState extends State<BerandaPage> with WidgetsBindingObserver {
                                 color: userLogin2.workStatus == "AKTIF"
                                     ? Colors.green
                                     : userLogin2.workStatus == "ISTIRAHAT"
-                                    ? Colors.yellow
-                                    : Colors.red,
+                                        ? Colors.yellow
+                                        : Colors.red,
                                 borderRadius: BorderRadius.circular(20)),
                           ),
                           Text(
@@ -305,8 +437,8 @@ class _BerandaPageState extends State<BerandaPage> with WidgetsBindingObserver {
                                     : userLogin2.workStatus == "ISTIRAHAT"
                                         ? Colors.yellow
                                         : Colors.red,
-                            fontSize: ScreenUtil().setSp(12),
-                            fontWeight: FontWeight.w700),
+                                fontSize: ScreenUtil().setSp(12),
+                                fontWeight: FontWeight.w700),
                           )
                         ],
                       ),

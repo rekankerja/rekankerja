@@ -34,16 +34,16 @@ class _AkunPageState extends State<AkunPage> {
                         builder: (BuildContext context) => AlertDialog(
                               content: Column(children: [
                                 Text("App Version : $appVersion"),
-                                Text("Build Code : $buildCode")
-                              ]),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: const Text('OK'),
+                                Text("Build Code : $buildCode"),
+                                SizedBox(
+                                  height: 8,
                                 ),
-                              ],
+                                Text("Apa Yang baru ?", style:TextStyle(
+                                  fontWeight: FontWeight.w300,
+                                )),
+                                Text("Improve Maps"),
+                                Text("Improve tampilan alert"),
+                              ]),
                             ));
                   },
                   child: Container(

@@ -25,7 +25,8 @@ final client = MqttServerClient('192.168.100.143', '');
 bool isMqttConnect = false;
 
 User userLogin; // ini untuk data sementara di Firebase saat Login
-ClassUserLogin userLogin2; // Ini data untuk UserLogin yang sudah diolah berdasarkan kebutuhan
+ClassUserLogin userLogin2 = ClassUserLogin("", "", "", "", "", "", "USER", "", "", "FALSE", "TIDAK AKTIF",
+    "", "", ""); // Ini data untuk UserLogin yang sudah diolah berdasarkan kebutuhan
 
 ClassSettingAdmin refreshRate = ClassSettingAdmin("REFRESH RATE", "5", null, null, null); // Ini data untuk Refresh Rate
 
