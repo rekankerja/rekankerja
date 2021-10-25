@@ -31,6 +31,7 @@ class _BerandaPageState extends State<BerandaPage> with WidgetsBindingObserver {
   GoogleMapController _controller;
   Location _locationTracker = Location();
   bool firstTime = true;
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -40,7 +41,26 @@ class _BerandaPageState extends State<BerandaPage> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
     addMarker();
     //connectToDevice(userLogin2.alatAddress, userLogin2.alatNama);
+    konfirmasiBluetooth();
     super.initState();
+  }
+
+  konfirmasiBluetooth() async {
+
+    setState(() {
+      if(connection.isConnected){
+        print(connection.isConnected);
+        userLogin2.alatConnect = "TRUE";
+        addresstemp = userLogin2.alatAddress;
+        namaAlat = userLogin2.alatNama;
+      } else{
+        userLogin2.alatConnect = "FALSE";
+        addresstemp = "";
+        namaAlat = "";
+        connectToDevice(userLogin2.alatAddress, userLogin2.alatNama);
+      }
+      isLoading = false;
+    });
   }
 
   addMarker() async {
@@ -376,13 +396,13 @@ class _BerandaPageState extends State<BerandaPage> with WidgetsBindingObserver {
                             height: 10,
                             width: 10,
                             decoration: BoxDecoration(
-                                color: userLogin2.alatAddress != null ? Colors.green : Colors.red,
+                                color: userLogin2.alatAddress != "null" ? Colors.green : Colors.red,
                                 borderRadius: BorderRadius.circular(20)),
                           ),
                           Text(
-                            userLogin2.alatAddress != null ? " AKTIF" : " TIDAK AKTIF",
+                            userLogin2.alatAddress != "null" ? " AKTIF" : " TIDAK AKTIF",
                             style: TextStyle(
-                                color: userLogin2.alatAddress != null ? Colors.green : Colors.red,
+                                color: userLogin2.alatAddress != "null" ? Colors.green : Colors.red,
                                 fontSize: ScreenUtil().setSp(12),
                                 fontWeight: FontWeight.w700),
                           )

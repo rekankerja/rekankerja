@@ -61,7 +61,7 @@ class DBHelper {
 
     /// bikin database untuk logReceivepesan db -- INI SAAT MENERIMA PESAN
     await db.execute(
-        "CREATE TABLE logreceivepesan(id INTEGER PRIMARY KEY, uid TEXT, dateTimeReceive TEXT, uidSender TEXT, displayNameSender TEXT, pesan TEXT, urlPhotoSender TEXT, idMessageSender INTEGER, isRead TEXT)");
+        "CREATE TABLE logreceivepesan(id INTEGER PRIMARY KEY, uid TEXT, dateTimeReceive TEXT, uidSender TEXT, displayNameSender TEXT, pesan TEXT, urlPhotoSender TEXT, idMessageSender INTEGER, isBuzzerReceive TEXT, isRead TEXT)");
 
     /// bikin database untuk pesan db -- INI UNTUK SETTING ADMIN
     await db.execute(
@@ -272,6 +272,7 @@ class DBHelper {
           list[i]['pesan'],
           list[i]['urlPhotoSender'],
           list[i]['idMessageSender'],
+          list[i]['isBuzzerReceive'],
           list[i]['isRead']);
       data.setLogReceivePesanId(list[i]['id']);
       datalogreceivepesan.add(data);

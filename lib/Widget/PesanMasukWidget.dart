@@ -39,7 +39,6 @@ class _PesanMasukWidgetState extends State<PesanMasukWidget> {
         if(listJson[0]["uidReceiver"] == userLogin2.uid){
           DateTime date = await NTP.now();
           setState(() {
-            print("masuk sini");
             try{
               listpesanmasuk..add(ClassBuzzer(
                 listJson[0]["uidSender"],

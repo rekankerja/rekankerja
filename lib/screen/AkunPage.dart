@@ -189,20 +189,23 @@ class _AkunPageState extends State<AkunPage> {
                       ) : Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            padding: EdgeInsets.only(left: 8.0),
-                            //padding: EdgeInsets.all(8.0),
-                            child:  Text("Perangkat Tersambung", style: TextStyle(
+                          // Container(
+                          //   padding: EdgeInsets.only(left: 8.0),
+                          //   //padding: EdgeInsets.all(8.0),
+                          //   child:  Text("Perangkat Tersambung", style: TextStyle(
+                          //     fontWeight: FontWeight.w700
+                          //   ),),
+                          // ),
+                          // Container(
+                          //   padding: EdgeInsets.only(left: 8.0),
+                          //   //padding: EdgeInsets.all(8.0),
+                          //   child:  Text("${userLogin2.alatNama}", style: TextStyle(
+                          //       fontWeight: FontWeight.w300
+                          //   ),),
+                          // )
+                          Text(" Perangkat Tersambung", style: TextStyle(
                               fontWeight: FontWeight.w700
-                            ),),
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(left: 8.0),
-                            //padding: EdgeInsets.all(8.0),
-                            child:  Text("${userLogin2.alatNama}", style: TextStyle(
-                                fontWeight: FontWeight.w300
-                            ),),
-                          )
+                          ),),
                         ],
                       )
                     ],

@@ -154,9 +154,7 @@ class _ModalKonekAlatState extends State<ModalKonekAlat> {
                   onTap: (){
                     connectToDevice(address, device.name).then((value) {
                       print(value);
-                      setState(() {
-
-                      });
+                      Navigator.pop(context);
                     }).whenComplete(() {
                       setState(() {
 

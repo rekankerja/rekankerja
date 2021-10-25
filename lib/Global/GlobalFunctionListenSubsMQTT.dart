@@ -5,6 +5,7 @@ import 'package:rekankerja/Class/ClassRekanKerja.dart';
 import 'package:rekankerja/DbLokal/ModelDbHelper.dart';
 
 import 'GlobalFunction.dart';
+import 'GlobalFunctionKoneksiAlat.dart';
 import 'GlobalFunctionPublishMQTT.dart';
 import 'GlobalVariable.dart';
 
@@ -211,6 +212,9 @@ ListenRekanKerjaJabatan(data) async {
           responselog[urutanDBLokalUserLogin].isNotifOn,
           responselog[urutanDBLokalUserLogin].workStatus,
           responselog[urutanDBLokalUserLogin].keteranganWorkStatus,
+          responselog[urutanDBLokalUserLogin].alatConnect,
+          responselog[urutanDBLokalUserLogin].isImage,
+          responselog[urutanDBLokalUserLogin].isMotion,
           responselog[urutanDBLokalUserLogin].latitude,
           responselog[urutanDBLokalUserLogin].longitude,
           date.toString()));
@@ -224,7 +228,9 @@ ListenRekanKerjaBuzzer(data) async {
   List listJson = jsonDecode(data) as List;
   DateTime date = await NTP.now();
 
+
   if(listJson[0]["uidReceiver"] == userLogin2.uid){
+    /// Masuk ke Pesan Keluar
     var receivepesanhelper = LogReceivePesan(
         listJson[0]["uidReceiver"],
         date.toString(),
@@ -233,8 +239,30 @@ ListenRekanKerjaBuzzer(data) async {
         listJson[0]["pesan"],
         listJson[0]["photoURLSender"],
         listJson[0]["idMessageSender"],
+        listJson[0]["isBuzzerReceive"],
         "FALSE"
     );
     await db.saveReceivePesan(receivepesanhelper);
+
+    print("USE BUZZER ===============================");
+
+    /// Buzzer convert
+    int buzzerenable = 0;
+    if(listJson[0]["isUseBuzzer"]== "TRUE"){
+      buzzerenable = 1;
+    }
+
+    try{
+      sendMessage('{"idPesanPenerima":${listJson[0]["idMessageSender"]},"buzzer":$buzzerenable,"namaPengirim":"${listJson[0]["displayNameSender"]}","pesan":"${listJson[0]["pesan"]}","waktu":5}');
+    }
+    catch(er){
+      print(er);
+    }
+
   }
+
+
+
+
+  // if(listJson[0][])
 }

@@ -12,6 +12,9 @@ class ClassRekanKerja {
   String isNotifOn = "FALSE";
   String workStatus;
   String keteranganWorkStatus;
+  String alatConnect;
+  String isMotion;
+  String isImage;
   String latitude;
   String longitude;
   String lastUpdate;
@@ -29,6 +32,9 @@ class ClassRekanKerja {
     'isNotifOn': isNotifOn,
     'workStatus': workStatus,
     'keteranganWorkStatus': keteranganWorkStatus,
+    'alatConnect': alatConnect,
+    'isMotion': isMotion,
+    'isImage': isImage,
     'latitude': latitude,
     'longitude': longitude,
     'lastUpdate': lastUpdate
@@ -47,6 +53,9 @@ class ClassRekanKerja {
       this.isNotifOn,
       this.workStatus,
       this.keteranganWorkStatus,
+      this.alatConnect,
+      this.isMotion,
+      this.isImage,
       this.latitude,
       this.longitude,
       this.lastUpdate

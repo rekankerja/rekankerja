@@ -38,6 +38,9 @@ class _RekanKerjaPageState extends State<RekanKerjaPage> {
           responselog[_i].isNotifOn,
           responselog[_i].workStatus,
           responselog[_i].keteranganWorkStatus,
+          responselog[_i].alatConnect,
+          responselog[_i].isMotion,
+          responselog[_i].isImage,
           responselog[_i].latitude,
           responselog[_i].longitude,
           responselog[_i].lastUpdate));
@@ -74,6 +77,9 @@ class _RekanKerjaPageState extends State<RekanKerjaPage> {
                 listJson[0]["isNotifOn"],
                 listJson[0]["workStatus"],
                 listJson[0]["keteranganWorkStatus"],
+                listJson[0]["alatConnect"],
+                listJson[0]["isMotion"],
+                listJson[0]["isImage"],
                 listJson[0]["latitude"],
                 listJson[0]["longitude"],
                 listJson[0]["lastUpdate"]);
@@ -92,6 +98,9 @@ class _RekanKerjaPageState extends State<RekanKerjaPage> {
                   listJson[0]["isNotifOn"],
                   listJson[0]["workStatus"],
                   listJson[0]["keteranganWorkStatus"],
+                  listJson[0]["alatConnect"],
+                  listJson[0]["isMotion"],
+                  listJson[0]["isImage"],
                   listJson[0]["latitude"],
                   listJson[0]["longitude"],
                   listJson[0]["lastUpdate"]));
@@ -143,7 +152,7 @@ class _RekanKerjaPageState extends State<RekanKerjaPage> {
                               Container(
                                 height: 24,
                                 width: 24,
-                                child: Image.network(rekanKerja[i].photoURL),
+                                child: rekanKerja[i].photoURL != null ? Image.network(rekanKerja[i].photoURL) : Container(),
                               ),
                               SizedBox(width: 8),
                               Text("${rekanKerja[i].displayName}")

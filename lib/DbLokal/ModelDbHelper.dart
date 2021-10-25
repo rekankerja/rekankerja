@@ -224,6 +224,7 @@ class LogReceivePesan {
   String _pesan;
   String _urlPhotoSender;
   int _idMessageSender;
+  String _isBuzzerReceive;
   String _isRead;
 
   LogReceivePesan(
@@ -234,6 +235,7 @@ class LogReceivePesan {
       this._pesan,
       this._urlPhotoSender,
       this._idMessageSender,
+      this._isBuzzerReceive,
       this._isRead);
 
   LogReceivePesan.map(dynamic obj) {
@@ -244,6 +246,7 @@ class LogReceivePesan {
     this._pesan = obj["pesan"];
     this._urlPhotoSender = obj["urlPhotoSender"];
     this._idMessageSender = obj["idMessageSender"];
+    this._isBuzzerReceive = obj["isBuzzerReceive"];
     this._isRead = obj["isRead"];
   }
 
@@ -254,6 +257,7 @@ class LogReceivePesan {
   String get pesan => _pesan;
   String get urlPhotoSender => _urlPhotoSender;
   int get idMessageSender => _idMessageSender;
+  String get isBuzzerReceive => _isBuzzerReceive;
   String get isRead => _isRead;
 
   Map<String, dynamic> toMap() {
@@ -266,6 +270,7 @@ class LogReceivePesan {
     map['pesan'] = _pesan;
     map['urlPhotoSender'] = _urlPhotoSender;
     map['idMessageSender'] = _idMessageSender;
+    map['isBuzzerReceive'] = _isBuzzerReceive;
     map['isRead'] = _isRead;
 
     return map;

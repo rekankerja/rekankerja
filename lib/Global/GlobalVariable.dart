@@ -11,7 +11,7 @@ import 'package:rekankerja/DbLokal/DbHelper.dart';
 /// APP VERSION --
 
 String appVersion = "1.0.0";
-String buildCode = "0";
+String buildCode = "3";
 
 /// -------------------------------------------------------------
 /// DATABASE
