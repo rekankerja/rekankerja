@@ -52,9 +52,9 @@ class _DetailrekanKerjaPageState extends State<DetailrekanKerjaPage> {
           }); 
         }
       }
-      print(
-          'Change notification Dari Rekan Kerja Page:: topic is <${c[0].topic}>, payload is <-- $pt -->');
-      print('');
+      // print(
+      //     'Change notification Dari Rekan Kerja Page:: topic is <${c[0].topic}>, payload is <-- $pt -->');
+      // print('');
     });
   }
 

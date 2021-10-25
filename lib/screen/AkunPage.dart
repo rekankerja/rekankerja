@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rekankerja/Global/GlobalFunction.dart';
 import 'package:rekankerja/Global/GlobalVariable.dart';
+import 'package:rekankerja/Modal/ModalKonekAlat.dart';
 import 'package:rekankerja/Modal/ModalReferall.dart';
 import 'package:rekankerja/Modal/ModalSetRefreshRate.dart';
 import 'package:rekankerja/Modal/ModalSettingJamKerja.dart';
@@ -165,17 +166,47 @@ class _AkunPageState extends State<AkunPage> {
                 SizedBox(
                   height: 8.0,
                 ),
-                Row(
-                  children: [
-                    Image.asset(
-                      "assets/ic_bluetoothon.png",
-                      width: ScreenUtil().setWidth(18),
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text("Sambungkan Perangkat"),
-                    )
-                  ],
+                GestureDetector(
+                  onTap: (){
+                    showModalBottomSheet<void>(
+                        context: context,
+                        isScrollControlled: true,
+                        builder: (BuildContext context) {
+                          return ModalKonekAlat();
+                        }).whenComplete(() {
+                      setState(() {});
+                    });
+                  },
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        "assets/ic_bluetoothon.png",
+                        width: ScreenUtil().setWidth(18),
+                      ),
+                      addresstemp == "" ? Container(
+                        padding: EdgeInsets.all(8.0),
+                        child:  Text("Sambungkan Perangkat"),
+                      ) : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.only(left: 8.0),
+                            //padding: EdgeInsets.all(8.0),
+                            child:  Text("Perangkat Tersambung", style: TextStyle(
+                              fontWeight: FontWeight.w700
+                            ),),
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(left: 8.0),
+                            //padding: EdgeInsets.all(8.0),
+                            child:  Text("${userLogin2.alatNama}", style: TextStyle(
+                                fontWeight: FontWeight.w300
+                            ),),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
                 ),
 
                 /// PEMBATAS ANTARA ADMIN DAN USER BIASA ////////////--------------------------------------------------------------
@@ -241,21 +272,21 @@ class _AkunPageState extends State<AkunPage> {
                               ],
                             ),
                           ),
-                          SizedBox(
-                            height: 8.0,
-                          ),
-                          Row(
-                            children: [
-                              Image.asset(
-                                "assets/ic_holiday.png",
-                                width: ScreenUtil().setWidth(18),
-                              ),
-                              Container(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text("Atur hari Libur"),
-                              )
-                            ],
-                          ),
+                          // SizedBox(
+                          //   height: 8.0,
+                          // ),
+                          // Row(
+                          //   children: [
+                          //     Image.asset(
+                          //       "assets/ic_holiday.png",
+                          //       width: ScreenUtil().setWidth(18),
+                          //     ),
+                          //     Container(
+                          //       padding: EdgeInsets.all(8.0),
+                          //       child: Text("Atur hari Libur"),
+                          //     )
+                          //   ],
+                          // ),
                         ],
                       )
                     : Container(),

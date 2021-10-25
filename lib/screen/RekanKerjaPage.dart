@@ -18,7 +18,7 @@ class _RekanKerjaPageState extends State<RekanKerjaPage> {
   @override
   void initState() {
     getRekanKerjaFromDB();
-    ListenPerubahanData();
+    //ListenPerubahanData();
     super.initState();
   }
 
@@ -61,7 +61,6 @@ class _RekanKerjaPageState extends State<RekanKerjaPage> {
         int indexUpdate = rekanKerja
             .indexWhere((element) => element.uid == listJson[0]["uid"]);
         if(indexUpdate != -1){
-          setState(() {
             rekanKerja[indexUpdate] = ClassRekanKerja(
                 listJson[0]["uid"],
                 listJson[0]["displayName"],
@@ -78,9 +77,7 @@ class _RekanKerjaPageState extends State<RekanKerjaPage> {
                 listJson[0]["latitude"],
                 listJson[0]["longitude"],
                 listJson[0]["lastUpdate"]);
-          });
         } else {
-          setState(() {
             if(listJson[0]["uid"] != userLogin2.uid){
               rekanKerja.add(ClassRekanKerja(
                   listJson[0]["uid"],
@@ -100,13 +97,11 @@ class _RekanKerjaPageState extends State<RekanKerjaPage> {
                   listJson[0]["lastUpdate"]));
             }
 
-          });
-
         }
       }
-      print(
-          'Change notification Dari Rekan Kerja Page:: topic is <${c[0].topic}>, payload is <-- $pt -->');
-      print('');
+      // print(
+      //     'Change notification Dari Rekan Kerja Page:: topic is <${c[0].topic}>, payload is <-- $pt -->');
+      // print('');
     });
   }
 

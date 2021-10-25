@@ -12,6 +12,7 @@ PublishSettingAdmin(data) async {
 PublishRekanKerja(data) async {
   final builder = MqttClientPayloadBuilder();
   builder.addString('$data');
+  print('$data');
   if (client.connectionStatus.state == MqttConnectionState.connected)
   client.publishMessage(pubtopic2, MqttQos.exactlyOnce, builder.payload);
 }

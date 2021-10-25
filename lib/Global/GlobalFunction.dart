@@ -88,17 +88,17 @@ Future<int> Subs() async {
     isMqttConnect = true;
   } on Exception catch (e) {
     isMqttConnect = false;
-    print('client exception - $e');
+    // print('client exception - $e');
     client.disconnect();
   }
 
   /// Check we are connected
   if (client.connectionStatus.state == MqttConnectionState.connected) {
-    print('Mosquitto client connected');
+    // print('Mosquitto client connected');
   } else {
     /// Use status here rather than state if you also want the broker return code.
-    print(
-        'ERROR Mosquitto client connection failed - disconnecting, status is ${client.connectionStatus}');
+    // print(
+    //     'ERROR Mosquitto client connection failed - disconnecting, status is ${client.connectionStatus}');
     client.disconnect();
   }
 
@@ -126,16 +126,19 @@ Future<int> Subs() async {
       ListenSettingAdmin(pt);
     } else if (c[0].topic.startsWith("RekanKerja/${userLogin2.referall}")) {
       ListenRekanKerja(pt);
-    } else if (c[0].topic.startsWith("RekanKerjaJabatan/${userLogin2.referall}")) {
+    } else if (c[0]
+        .topic
+        .startsWith("RekanKerjaJabatan/${userLogin2.referall}")) {
       ListenRekanKerjaJabatan(pt);
-    } else if (c[0].topic.startsWith("RekanKerjaBuzzer/${userLogin2.referall}")) {
+    } else if (c[0]
+        .topic
+        .startsWith("RekanKerjaBuzzer/${userLogin2.referall}")) {
       ListenRekanKerjaBuzzer(pt);
     }
 
-
-    print(
-        'Change notification:: topic is <${c[0].topic}>, payload is <-- $pt -->');
-    print('');
+    // print(
+    //     'Change notification:: topic is <${c[0].topic}>, payload is <-- $pt -->');
+    // print('');
   });
 
   /// If needed you can listen for published messages that have completed the publishing
@@ -185,41 +188,50 @@ UnSubs() async {
   client.unsubscribe(topic4);
   client.unsubscribe(topic6);
 
+  pubtopic1 = 'RekanKerjaSetting/${userLogin2.referall}/${userLogin2.uid}';
 
-  pubtopic1 = 'RekanKerjaSetting/${userLogin2.referall}/${userLogin2.uid}'; /// PUBLISH ADMIN REKAN KERJA
-  pubtopic2 = 'RekanKerja/${userLogin2.referall}/${userLogin2.uid}'; /// PUBLISH DATA REKAN KERJA
-  pubtopic3 = 'RekanKerjaBuzzer/${userLogin2.referall}/${userLogin2.uid}'; /// PUBLISH DATA BUZZER
-  pubtopic4 = 'RekanKerjaBuzzerReport/${userLogin2.referall}/${userLogin2.uid}'; /// PUBLISH DATA BUZZER REPORT
-  pubtopic5 = 'RekanKerjaJabatan/${userLogin2.referall}/${userLogin2.uid}'; /// PUBLISH DATA BUZZER REPORT
+  /// PUBLISH ADMIN REKAN KERJA
+  pubtopic2 = 'RekanKerja/${userLogin2.referall}/${userLogin2.uid}';
+
+  /// PUBLISH DATA REKAN KERJA
+  pubtopic3 = 'RekanKerjaBuzzer/${userLogin2.referall}/${userLogin2.uid}';
+
+  /// PUBLISH DATA BUZZER
+  pubtopic4 = 'RekanKerjaBuzzerReport/${userLogin2.referall}/${userLogin2.uid}';
+
+  /// PUBLISH DATA BUZZER REPORT
+  pubtopic5 = 'RekanKerjaJabatan/${userLogin2.referall}/${userLogin2.uid}';
+
+  /// PUBLISH DATA BUZZER REPORT
   client.disconnect();
 }
 
 /// The subscribed callback
 void onSubscribed(String topic) {
-  print('Subscription confirmed for topic $topic');
+  // print('Subscription confirmed for topic $topic');
 }
 
 /// The pre auto re connect callback
 void onAutoReconnect() {
-  print(
-      'onAutoReconnect client callback - Client auto reconnection sequence will start');
+  // print(
+  //     'onAutoReconnect client callback - Client auto reconnection sequence will start');
 }
 
 /// The post auto re connect callback
 void onAutoReconnected() {
-  print(
-      'onAutoReconnected client callback - Client auto reconnection sequence has completed');
+  // print(
+  //     'onAutoReconnected client callback - Client auto reconnection sequence has completed');
 }
 
 /// The successful connect callback
 void onConnected() {
-  print('OnConnected client callback - Client connection was successful');
+  // print('OnConnected client callback - Client connection was successful');
 }
 
 /// Pong callback
 void pong() {
-  print(
-      'Ping response client callback invoked - you may want to disconnect your broker here');
+  // print(
+  //     'Ping response client callback invoked - you may want to disconnect your broker here');
 }
 
 class AuthenticationSignIn {
@@ -280,6 +292,11 @@ class AuthenticationSignIn {
                 "",
                 null,
                 null,
+                "FALSE",
+                null,
+                null,
+                "FALSE",
+                "FALSE",
                 "$appVersion",
                 "$buildCode");
             await db.saveUser(userhelper);
@@ -297,7 +314,12 @@ class AuthenticationSignIn {
                 "AKTIF",
                 "",
                 null,
-                null);
+                null,
+                "FALSE",
+                null,
+                null,
+                "FALSE",
+                "FALSE");
 
             try {
               // await Future.delayed(const Duration(milliseconds: 250), () {
@@ -310,20 +332,26 @@ class AuthenticationSignIn {
           } else {
             /// BILA USER SUDAH ADA DI DB
             userLogin2 = ClassUserLogin(
-                userLogin.uid,
-                userLogin.displayName,
-                userLogin.email,
-                userLogin.photoURL,
-                userLogin.metadata.creationTime.toString(),
-                userLogin.metadata.lastSignInTime.toString(),
-                "${responselog[urutanDBLokalUserLogin].jabatan}",
-                "${responselog[urutanDBLokalUserLogin].referall}",
-                "${responselog[urutanDBLokalUserLogin].selfReferall}",
-                "${responselog[urutanDBLokalUserLogin].isNotifOn}",
-                "${responselog[urutanDBLokalUserLogin].workStatus}",
-                "${responselog[urutanDBLokalUserLogin].keteranganWorkStatus}",
-                "${responselog[urutanDBLokalUserLogin].latitude}",
-                "${responselog[urutanDBLokalUserLogin].longitude}");
+              userLogin.uid,
+              userLogin.displayName,
+              userLogin.email,
+              userLogin.photoURL,
+              userLogin.metadata.creationTime.toString(),
+              userLogin.metadata.lastSignInTime.toString(),
+              "${responselog[urutanDBLokalUserLogin].jabatan}",
+              "${responselog[urutanDBLokalUserLogin].referall}",
+              "${responselog[urutanDBLokalUserLogin].selfReferall}",
+              "${responselog[urutanDBLokalUserLogin].isNotifOn}",
+              "${responselog[urutanDBLokalUserLogin].workStatus}",
+              "${responselog[urutanDBLokalUserLogin].keteranganWorkStatus}",
+              "${responselog[urutanDBLokalUserLogin].latitude}",
+              "${responselog[urutanDBLokalUserLogin].longitude}",
+              "${responselog[urutanDBLokalUserLogin].alatConnect}",
+              "${responselog[urutanDBLokalUserLogin].alatAddress}",
+              "${responselog[urutanDBLokalUserLogin].alatNama}",
+              responselog[urutanDBLokalUserLogin].isMotion,
+              responselog[urutanDBLokalUserLogin].isImage,
+            );
 
             // try {
             //   /// GET DATA UNTUK USER REKAN KERJA
@@ -374,6 +402,11 @@ class AuthenticationSignIn {
                 "",
                 null,
                 null,
+                "FALSE",
+                null,
+                null,
+                "FALSE",
+                "FALSE",
                 "$appVersion",
                 "$buildCode");
             await db.saveUser(userhelper);
@@ -391,7 +424,12 @@ class AuthenticationSignIn {
                 "${responselog[0].workStatus}",
                 "${responselog[0].keteranganWorkStatus}",
                 null,
-                null);
+                null,
+                "FALSE",
+                null,
+                null,
+                "FALSE",
+                "FALSE");
 
             try {
               // await Future.delayed(const Duration(milliseconds: 250), () {
@@ -493,6 +531,11 @@ class Authentication {
               "",
               null,
               null,
+              "FALSE",
+              null,
+              null,
+              "FALSE",
+              "FALSE",
               "$appVersion",
               "$buildCode");
           await db.saveUser(userhelper);
@@ -510,10 +553,16 @@ class Authentication {
               "AKTIF",
               "",
               null,
-              null);
+              null,
+              "FALSE",
+              null,
+              null,
+              "FALSE",
+              "FALSE");
         } else {
           /// BILA USER SUDAH ADA DI DB
-          userLogin2 = ClassUserLogin(
+          try{
+            userLogin2 = ClassUserLogin(
               userLogin.uid,
               userLogin.displayName,
               userLogin.email,
@@ -527,7 +576,16 @@ class Authentication {
               "${responselog[urutanDBLokalUserLogin].workStatus}",
               "${responselog[urutanDBLokalUserLogin].keteranganWorkStatus}",
               "${responselog[urutanDBLokalUserLogin].latitude}",
-              "${responselog[urutanDBLokalUserLogin].longitude}");
+              "${responselog[urutanDBLokalUserLogin].longitude}",
+              "${responselog[urutanDBLokalUserLogin].alatConnect}",
+              "${responselog[urutanDBLokalUserLogin].alatAddress}",
+              "${responselog[urutanDBLokalUserLogin].alatNama}",
+                "${responselog[urutanDBLokalUserLogin].isMotion}",
+                "${responselog[urutanDBLokalUserLogin].isImage}"
+            );
+          } catch(er){
+            print(er);
+          }
 
           // try {
           //   /// GET DATA UNTUK USER REKAN KERJA
@@ -586,6 +644,11 @@ class Authentication {
               "",
               null,
               null,
+              "FALSE",
+              null,
+              null,
+              'FALSE',
+              "FALSE",
               "$appVersion",
               "$buildCode");
           await db.saveUser(userhelper);
@@ -603,7 +666,12 @@ class Authentication {
               "${responselog[0].workStatus}",
               "${responselog[0].keteranganWorkStatus}",
               null,
-              null);
+              null,
+              "FALSE",
+              null,
+              null,
+              'FALSE',
+              "FALSE");
         } catch (er) {
           print(er);
         }
@@ -640,7 +708,6 @@ Future<String> SetReferall(referall) async {
 
     print(urutanDBLokalUserLogin);
 
-
     var userhelper = UserHelper(
         responselog[urutanDBLokalUserLogin].uid,
         responselog[urutanDBLokalUserLogin].email,
@@ -655,12 +722,19 @@ Future<String> SetReferall(referall) async {
         responselog[urutanDBLokalUserLogin].keteranganWorkStatus,
         responselog[urutanDBLokalUserLogin].latitude,
         responselog[urutanDBLokalUserLogin].longitude,
+        responselog[urutanDBLokalUserLogin].alatConnect,
+        responselog[urutanDBLokalUserLogin].alatAddress,
+        responselog[urutanDBLokalUserLogin].alatNama,
+        (responselog[urutanDBLokalUserLogin].isMotion),
+        (responselog[urutanDBLokalUserLogin].isImage),
         "$appVersion",
         "$buildCode");
     userhelper.setUserId(responselog[urutanDBLokalUserLogin].id);
     await db.updateUser(userhelper);
     userLogin2.referall = referall; // UPDATE untuk userLogin
-    userLogin2.jabatan = userLogin2.selfReferall == referall ? "ADMIN" : "USER" ;// Update untuk userlogin menjadi jabatan ADMIN
+    userLogin2.jabatan = userLogin2.selfReferall == referall
+        ? "ADMIN"
+        : "USER"; // Update untuk userlogin menjadi jabatan ADMIN
 
     topic1 = 'RekanKerja/${userLogin2.referall}/#';
 
@@ -701,11 +775,52 @@ Future<String> SetStatusKerja(status) async {
         responselog[urutanDBLokalUserLogin].keteranganWorkStatus,
         responselog[urutanDBLokalUserLogin].latitude,
         responselog[urutanDBLokalUserLogin].longitude,
+        responselog[urutanDBLokalUserLogin].alatConnect,
+        responselog[urutanDBLokalUserLogin].alatAddress,
+        responselog[urutanDBLokalUserLogin].alatNama,
+        responselog[urutanDBLokalUserLogin].isMotion,
+        responselog[urutanDBLokalUserLogin].isImage,
         "$appVersion",
         "$buildCode");
     userhelper.setUserId(responselog[urutanDBLokalUserLogin].id);
     await db.updateUser(userhelper);
     userLogin2.workStatus = status; // UPDATE untuk workstatus
+    return "sukses";
+  } catch (er) {
+    print(er);
+    return "gagal";
+  }
+}
+
+Future<String> SetAlatConnect(alatConnect, alatAddress, alatNama) async {
+  try {
+    final responselog = await db.getUser();
+    var userhelper = UserHelper(
+        responselog[urutanDBLokalUserLogin].uid,
+        responselog[urutanDBLokalUserLogin].email,
+        responselog[urutanDBLokalUserLogin].displayName,
+        responselog[urutanDBLokalUserLogin].urlPhoto,
+        responselog[urutanDBLokalUserLogin].lastLogin,
+        responselog[urutanDBLokalUserLogin].jabatan,
+        responselog[urutanDBLokalUserLogin].referall,
+        responselog[urutanDBLokalUserLogin].selfReferall,
+        responselog[urutanDBLokalUserLogin].isNotifOn,
+        responselog[urutanDBLokalUserLogin].workStatus,
+        responselog[urutanDBLokalUserLogin].keteranganWorkStatus,
+        responselog[urutanDBLokalUserLogin].latitude,
+        responselog[urutanDBLokalUserLogin].longitude,
+        "$alatConnect",
+        "$alatAddress",
+        "$alatNama",
+        responselog[urutanDBLokalUserLogin].isMotion,
+        responselog[urutanDBLokalUserLogin].isImage,
+        "$appVersion",
+        "$buildCode");
+    userhelper.setUserId(responselog[urutanDBLokalUserLogin].id);
+    await db.updateUser(userhelper);
+    userLogin2.alatConnect = alatConnect; // UPDATE untuk alatConnect
+    userLogin2.alatAddress = alatAddress; // UPDATE untuk alatConnect
+    userLogin2.alatNama = alatNama; // UPDATE untuk alatConnect
     return "sukses";
   } catch (er) {
     print(er);
@@ -730,6 +845,11 @@ Future<String> SetJanganGanggu(isJanganGanggu) async {
         responselog[urutanDBLokalUserLogin].keteranganWorkStatus,
         responselog[urutanDBLokalUserLogin].latitude,
         responselog[urutanDBLokalUserLogin].longitude,
+        responselog[urutanDBLokalUserLogin].alatConnect,
+        responselog[urutanDBLokalUserLogin].alatAddress,
+        responselog[urutanDBLokalUserLogin].alatNama,
+        responselog[urutanDBLokalUserLogin].isMotion,
+        responselog[urutanDBLokalUserLogin].isImage,
         "$appVersion",
         "$buildCode");
     userhelper.setUserId(responselog[urutanDBLokalUserLogin].id);
@@ -821,8 +941,6 @@ TestForeGround() async {
   //   print("false");
   //   return false;
   // }
-
-
 }
 
 PublishData() async {
@@ -858,7 +976,7 @@ PublishData() async {
         isitabeluser[0].latitude,
         isitabeluser[0].longitude,
         date.toString()));
-    if(isitabeluser[0].jabatan == "ADMIN"){
+    if (isitabeluser[0].jabatan == "ADMIN") {
       PublishSettingAdmin(json.encode(dataSettingAdmin));
     }
     PublishRekanKerja(json.encode(dataUserLogin));
@@ -888,6 +1006,11 @@ SetGPS(latitude, longitude) async {
       responselog[urutanDBLokalUserLogin].keteranganWorkStatus,
       latitude,
       longitude,
+      responselog[urutanDBLokalUserLogin].alatConnect,
+      responselog[urutanDBLokalUserLogin].alatAddress,
+      responselog[urutanDBLokalUserLogin].alatNama,
+      responselog[urutanDBLokalUserLogin].isMotion,
+      responselog[urutanDBLokalUserLogin].isImage,
       "$appVersion",
       "$buildCode");
   userhelper.setUserId(responselog[urutanDBLokalUserLogin].id);

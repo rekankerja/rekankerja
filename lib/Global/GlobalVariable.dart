@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 import 'package:rekankerja/Class/ClassRekanKerja.dart';
 import 'package:rekankerja/Class/ClassSettingAdmin.dart';
@@ -23,17 +24,17 @@ final client = MqttServerClient('192.168.100.143', '');
 /// -------------------------------------------------------------
 
 bool isMqttConnect = false;
-
+String addresstemp = "";
+String namaAlat = "";
 User userLogin; // ini untuk data sementara di Firebase saat Login
 ClassUserLogin userLogin2 = ClassUserLogin("", "", "", "", "", "", "USER", "", "", "FALSE", "TIDAK AKTIF",
-    "", "", ""); // Ini data untuk UserLogin yang sudah diolah berdasarkan kebutuhan
+    "", "", "", "FALSE", "", "", "FALSE","FALSE"); // Ini data untuk UserLogin yang sudah diolah berdasarkan kebutuhan
 
 ClassSettingAdmin refreshRate = ClassSettingAdmin("REFRESH RATE", "5", null, null, null); // Ini data untuk Refresh Rate
 
-
-
 List<ClassSettingAdmin> settingAdminHariKerja = [];
 int urutanDBLokalUserLogin;
+BluetoothConnection connection;
 Timer timer;
 
 String topic1 = 'RekanKerja/${userLogin2.referall}/#'; /// LIST GLOBAL REKAN KERJA

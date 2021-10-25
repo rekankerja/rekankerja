@@ -13,6 +13,11 @@ class UserHelper {
   String _keteranganWorkStatus;
   String _latitude;
   String _longitude;
+  String _alatConnect;
+  String _alatAddress;
+  String _alatNama;
+  String _isMotion;
+  String _isImage;
   String _appVersion;
   String _buildCode;
 
@@ -30,6 +35,11 @@ class UserHelper {
       this._keteranganWorkStatus,
       this._latitude,
       this._longitude,
+      this._alatConnect,
+      this._alatAddress,
+      this._alatNama,
+      this._isMotion,
+      this._isImage,
       this._appVersion,
       this._buildCode);
 
@@ -47,6 +57,11 @@ class UserHelper {
     this._keteranganWorkStatus = obj["keteranganWorkStatus"];
     this._latitude = obj["latitude"];
     this._longitude = obj["longitude"];
+    this._alatConnect = obj["alatConnect"];
+    this._alatAddress = obj["alatAddress"];
+    this._alatNama = obj["alatNama"];
+    this._isMotion = obj["isMotion"];
+    this._isImage = obj["isImage"];
     this._appVersion = obj["appVersion"];
     this._buildCode = obj["buildCode"];
   }
@@ -64,6 +79,11 @@ class UserHelper {
   String get keteranganWorkStatus => _keteranganWorkStatus;
   String get latitude => _latitude;
   String get longitude => _longitude;
+  String get alatConnect => _alatConnect;
+  String get alatAddress => _alatAddress;
+  String get alatNama => _alatNama;
+  String get isMotion => _isMotion;
+  String get isImage => _isImage;
   String get appVersion => _appVersion;
   String get buildCode => _buildCode;
 
@@ -83,6 +103,11 @@ class UserHelper {
     map['keteranganWorkStatus'] = _keteranganWorkStatus;
     map['latitude'] = _latitude;
     map['longitude'] = _longitude;
+    map['alatConnect'] = _alatConnect;
+    map['alatAddress'] = _alatAddress;
+    map['alatNama'] = _alatNama;
+    map['isMotion'] = _isMotion;
+    map['isImage'] = _isImage;
     map['appVersion'] = _appVersion;
     map['buildCode'] = _buildCode;
 
@@ -306,6 +331,8 @@ class RekanKerjaHelper {
   String _latitude;
   String _longitude;
   String _alatConnect;
+  String _isMotion;
+  String _isImage;
   String _lastLogin;
   String _lastUpdate;
 
@@ -321,6 +348,8 @@ class RekanKerjaHelper {
     this._latitude,
     this._longitude,
     this._alatConnect,
+    this._isMotion,
+    this._isImage,
     this._lastLogin,
     this._lastUpdate,
   );
@@ -337,6 +366,8 @@ class RekanKerjaHelper {
     this._latitude = obj["latitude"];
     this._longitude = obj["longitude"];
     this._alatConnect = obj["alatConnect"];
+    this._isMotion = obj["isMotion"];
+    this._isImage = obj["isImage"];
     this._lastLogin = obj["lastLogin"];
     this._lastUpdate = obj["lastUpdate"];
   }
@@ -352,6 +383,8 @@ class RekanKerjaHelper {
   String get latitude => _latitude;
   String get longitude => _longitude;
   String get alatConnect => _alatConnect;
+  String get isMotion => _isMotion;
+  String get isImage => _isImage;
   String get lastLogin => _lastLogin;
   String get lastUpdate => _lastUpdate;
 
@@ -369,6 +402,8 @@ class RekanKerjaHelper {
     map['latitude'] = _latitude;
     map['longitude'] = _longitude;
     map['alatConnect'] = _alatConnect;
+    map['isMotion'] = _isMotion;
+    map['isImage'] = _isImage;
     map['lastLogin'] = _lastLogin;
     map['lastUpdate'] = _lastUpdate;
 

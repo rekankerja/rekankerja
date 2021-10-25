@@ -73,13 +73,22 @@ ListenRekanKerja(data) async {
   final responselog = await db.getRekanKerja();
   List listJson = jsonDecode(data) as List;
 
-  if(responselog.isNotEmpty){
+  if (listJson[0]["uid"] == userLogin2.uid) {
+    /// UID diri sendiri, Jangan Ditambahkan Ke DB
+    rekanKerjaSudahAda = true;
+  } else if(responselog.isNotEmpty){
+    // switch (radians) {
+    //   case 0:
+    //   // do something
+    //     break;
+    //   case PI:
+    //   // do something else
+    //     break;
+    // }
+
     for (int _i = 0; _i < responselog.length; _i++) {
       /// PENGUJIAN UNTUK APAKAH USER SUDAH PERNAH LOGIN LALU LOGOUT
-      if (listJson[0]["uid"] == userLogin2.uid) {
-        /// UID diri sendiri, Jangan Ditambahkan Ke DB
-        rekanKerjaSudahAda = true;
-      } else if(listJson[0]["uid"] == responselog[_i].uid){
+      if(listJson[0]["uid"] == responselog[_i].uid){
         /// UID yang sudah ada jgn ditambahkan ke database
         /// update DB nya
 
@@ -95,6 +104,8 @@ ListenRekanKerja(data) async {
             listJson[0]["latitude"],
             listJson[0]["longitude"],
             listJson[0]["alatConnect"],
+            listJson[0]["isMotion"],
+            listJson[0]["isImage"],
             listJson[0]["lastLogin"],
             listJson[0]["lastUpdate"]);
         rekankerjahelper.setrekankerjaId(listJson[0]["id"]);
@@ -102,19 +113,27 @@ ListenRekanKerja(data) async {
 
 
         rekanKerjaSudahAda = true;
+        break;
       } else {
         rekanKerjaSudahAda = false;
-        break;
+        // break;
       }
     }
+    // /// BILA DIA MASIH BELUM ADA
+    // rekanKerjaSudahAda = false;
   } else {
-    if (listJson[0]["uid"] == userLogin2.uid) {
-      /// UID diri sendiri, Jangan Ditambahkan Ke DB
-      rekanKerjaSudahAda = true;
-    } else {
-      rekanKerjaSudahAda = false;
-    }
+    /// BILA DB BELUM ADA ISI, PASTI MASUK DB
+    rekanKerjaSudahAda = false;
   }
+  // else {
+  //   if (listJson[0]["uid"] == userLogin2.uid) {
+  //     /// UID diri sendiri, Jangan Ditambahkan Ke DB
+  //     rekanKerjaSudahAda = true;
+  //
+  //   } else {
+  //     rekanKerjaSudahAda = false;
+  //   }
+  // }
 
   if (rekanKerjaSudahAda == false) {
     /// Apabila belum ada di db, maka tambah rekan kerja
@@ -131,6 +150,8 @@ ListenRekanKerja(data) async {
         listJson[0]["latitude"],
         listJson[0]["longitude"],
         listJson[0]["alatConnect"],
+        listJson[0]["isMotion"],
+        listJson[0]["isImage"],
         listJson[0]["lastLogin"],
         listJson[0]["lastUpdate"]);
     await db.saveRekanKerja(rekankerjahelper);
@@ -165,6 +186,11 @@ ListenRekanKerjaJabatan(data) async {
           responselog[urutanDBLokalUserLogin].keteranganWorkStatus,
           responselog[urutanDBLokalUserLogin].latitude,
           responselog[urutanDBLokalUserLogin].longitude,
+          responselog[urutanDBLokalUserLogin].alatConnect,
+          responselog[urutanDBLokalUserLogin].alatAddress,
+          responselog[urutanDBLokalUserLogin].alatNama,
+          responselog[urutanDBLokalUserLogin].isMotion,
+          responselog[urutanDBLokalUserLogin].isImage,
           "$appVersion",
           "$buildCode");
       userhelper.setUserId(responselog[urutanDBLokalUserLogin].id);
@@ -211,7 +237,4 @@ ListenRekanKerjaBuzzer(data) async {
     );
     await db.saveReceivePesan(receivepesanhelper);
   }
-
-
-
 }

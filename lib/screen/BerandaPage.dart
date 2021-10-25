@@ -11,6 +11,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:rekankerja/Class/ClassSettingAdmin.dart';
 import 'package:rekankerja/Global/GlobalFunction.dart';
 import 'package:rekankerja/Global/GlobalFunctionForeground.dart';
+import 'package:rekankerja/Global/GlobalFunctionKoneksiAlat.dart';
 import 'package:rekankerja/utils/utilityscreen.dart';
 import 'dart:isolate';
 import '../Global/GlobalVariable.dart';
@@ -38,6 +39,7 @@ class _BerandaPageState extends State<BerandaPage> with WidgetsBindingObserver {
     //startForegroundTask();
     WidgetsBinding.instance.addObserver(this);
     addMarker();
+    //connectToDevice(userLogin2.alatAddress, userLogin2.alatNama);
     super.initState();
   }
 
@@ -160,9 +162,9 @@ class _BerandaPageState extends State<BerandaPage> with WidgetsBindingObserver {
           });
         }
       }
-      print(
-          'Change notification Dari Rekan Kerja Page:: topic is <${c[0].topic}>, payload is <-- $pt -->');
-      print('');
+      // print(
+      //     'Change notification Dari Rekan Kerja Page:: topic is <${c[0].topic}>, payload is <-- $pt -->');
+      // print('');
     });
   }
 
@@ -328,24 +330,34 @@ class _BerandaPageState extends State<BerandaPage> with WidgetsBindingObserver {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Container(
-                child: Row(
-              children: [
-                Image.asset(
-                    userLogin2 != null
+            child: SingleChildScrollView(
+              physics: AlwaysScrollableScrollPhysics(),
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  setState(() {
+
+                  });
+                },
+                child: Container(
+                    child: Row(
+                  children: [
+                    Image.asset(
+                        userLogin2 != null
+                            ? userLogin2.isNotifOn == "TRUE"
+                                ? "assets/ic_notifon.png"
+                                : "assets/ic_notifoff.png"
+                            : "assets/ic_notifoff.png",
+                        width: ScreenUtil().setWidth(24)),
+                    SizedBox(width: ScreenUtil().setWidth(4)),
+                    Text(userLogin2 != null
                         ? userLogin2.isNotifOn == "TRUE"
-                            ? "assets/ic_notifon.png"
-                            : "assets/ic_notifoff.png"
-                        : "assets/ic_notifoff.png",
-                    width: ScreenUtil().setWidth(24)),
-                SizedBox(width: ScreenUtil().setWidth(4)),
-                Text(userLogin2 != null
-                    ? userLogin2.isNotifOn == "TRUE"
-                        ? "Notifikasi Aktif"
-                        : "Notifikasi Non Aktif"
-                    : "Notifikasi Non Aktif")
-              ],
-            )),
+                            ? "Notifikasi Aktif"
+                            : "Notifikasi Non Aktif"
+                        : "Notifikasi Non Aktif")
+                  ],
+                )),
+              ),
+            ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -364,13 +376,13 @@ class _BerandaPageState extends State<BerandaPage> with WidgetsBindingObserver {
                             height: 10,
                             width: 10,
                             decoration: BoxDecoration(
-                                color: Colors.green,
+                                color: userLogin2.alatAddress != null ? Colors.green : Colors.red,
                                 borderRadius: BorderRadius.circular(20)),
                           ),
                           Text(
-                            " Connected",
+                            userLogin2.alatAddress != null ? " AKTIF" : " TIDAK AKTIF",
                             style: TextStyle(
-                                color: Colors.green,
+                                color: userLogin2.alatAddress != null ? Colors.green : Colors.red,
                                 fontSize: ScreenUtil().setSp(12),
                                 fontWeight: FontWeight.w700),
                           )
@@ -442,7 +454,8 @@ class _BerandaPageState extends State<BerandaPage> with WidgetsBindingObserver {
                           )
                         ],
                       ),
-                    )
+                    ),
+
                   ],
                 ),
               ),
@@ -451,6 +464,31 @@ class _BerandaPageState extends State<BerandaPage> with WidgetsBindingObserver {
           SizedBox(
             height: 12,
           ),
+          GestureDetector(
+            onTap: () async {
+              setState(() {
+
+              });
+            },
+            child: Container(
+              alignment: Alignment.center,
+              height: ScreenUtil().setHeight(36),
+              width: ScreenUtil.screenWidthDp,
+              color: Colors.blue,
+              child: Text(
+                "REFRESH STATUS",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: ScreenUtil().setSp(20),
+                    fontWeight: FontWeight.w700),
+              ),
+            ),
+          )
+
+
+
+
+
           // Text("Pesan dari Teman Kerja : "),
           // Card(
           //   child: Padding(

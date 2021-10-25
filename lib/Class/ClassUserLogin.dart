@@ -14,6 +14,11 @@ class ClassUserLogin {
   String keteranganWorkStatus;
   String latitude;
   String longitude;
+  String alatConnect;
+  String alatAddress;
+  String alatNama;
+  String isMotion;
+  String isImage;
 
   Map toJson() => {
         'uid': uid,
@@ -30,6 +35,11 @@ class ClassUserLogin {
         'keteranganWorkStatus': keteranganWorkStatus,
         'latitude': latitude,
         'longitude': longitude,
+        'alatConnect': alatConnect,
+        'alatAddress': alatAddress,
+        'alatNama': alatNama,
+        'motion': isMotion,
+        'image': isImage,
       };
 
   ClassUserLogin(
@@ -46,6 +56,11 @@ class ClassUserLogin {
       this.workStatus,
       this.keteranganWorkStatus,
       this.latitude,
-      this.longitude
+      this.longitude,
+      this.alatConnect,
+      this.alatAddress,
+      this.alatNama,
+      this.isMotion,
+      this.isImage
       );
 }

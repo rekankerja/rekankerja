@@ -49,7 +49,7 @@ class DBHelper {
   void _onCreate(Database db, int version) async {
     /// bikin database untuk user db
     await db.execute(
-        "CREATE TABLE user(id INTEGER PRIMARY KEY, uid TEXT, email TEXT, displayName TEXT, urlPhoto TEXT, lastLogin Text, jabatan TEXT, referall TEXT, selfReferall TEXT, isNotifOn TEXT, workStatus TEXT, keteranganWorkStatus TEXT, latitude TEXT, longitude TEXT, appVersion TEXT, buildCode TEXT)");
+        "CREATE TABLE user(id INTEGER PRIMARY KEY, uid TEXT, email TEXT, displayName TEXT, urlPhoto TEXT, lastLogin Text, jabatan TEXT, referall TEXT, selfReferall TEXT, isNotifOn TEXT, workStatus TEXT, keteranganWorkStatus TEXT, latitude TEXT, longitude TEXT, alatConnect TEXT, alatAddress TEXT, alatNama TEXT, isMotion TEXT, isImage TEXT, appVersion TEXT, buildCode TEXT)");
 
     /// bikin database untuk logDisconnect db
     await db.execute(
@@ -69,7 +69,7 @@ class DBHelper {
 
     /// bikin database untuk list rekan kerja
     await db.execute(
-        "CREATE TABLE rekankerja(id INTEGER PRIMARY KEY, uid TEXT, email TEXT, displayName TEXT, urlPhoto TEXT, jabatan TEXT, isNotifOn TEXT, workStatus TEXT, keteranganWorkStatus TEXT, latitude TEXT, longitude TEXT, alatConnect TEXT, lastLogin Text, lastUpdate Text)");
+        "CREATE TABLE rekankerja(id INTEGER PRIMARY KEY, uid TEXT, email TEXT, displayName TEXT, urlPhoto TEXT, jabatan TEXT, isNotifOn TEXT, workStatus TEXT, keteranganWorkStatus TEXT, latitude TEXT, longitude TEXT, alatConnect TEXT, isMotion TEXT, isImage TEXT, lastLogin Text, lastUpdate Text)");
   }
 
   // /// Create Employee table V2
@@ -121,6 +121,11 @@ class DBHelper {
           list[i]['keteranganWorkStatus'],
           list[i]['latitude'],
           list[i]['longitude'],
+          list[i]['alatConnect'],
+          list[i]['alatAddress'],
+          list[i]['alatNama'],
+          list[i]['isMotion'],
+          list[i]['isImage'],
           list[i]['appVersion'],
           list[i]['buildCode']);
       data.setUserId(list[i]['id']);
@@ -388,6 +393,8 @@ class DBHelper {
           list[i]['latitude'],
           list[i]['longitude'],
           list[i]['alatConnect'],
+          list[i]['isMotion'],
+          list[i]['isImage'],
           list[i]['lastLogin'],
           list[i]['lastUpdate']);
       data.setrekankerjaId(list[i]['id']);
