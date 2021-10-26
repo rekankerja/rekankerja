@@ -183,7 +183,7 @@ class _AkunPageState extends State<AkunPage> {
                         "assets/ic_bluetoothon.png",
                         width: ScreenUtil().setWidth(18),
                       ),
-                      addresstemp == "" ? Container(
+                      userLogin2.alatConnect != "TRUE" ? Container(
                         padding: EdgeInsets.all(8.0),
                         child:  Text("Sambungkan Perangkat"),
                       ) : Column(
@@ -250,31 +250,31 @@ class _AkunPageState extends State<AkunPage> {
                               ],
                             ),
                           ),
-                          SizedBox(
-                            height: 8.0,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              showModalBottomSheet<void>(
-                                  context: context,
-                                  isScrollControlled: true,
-                                  builder: (BuildContext context) {
-                                    return ModalSetRefreshRate();
-                                  });
-                            },
-                            child: Row(
-                              children: [
-                                Image.asset(
-                                  "assets/ic_timer.png",
-                                  width: ScreenUtil().setWidth(18),
-                                ),
-                                Container(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Text("Atur Refresh Rate"),
-                                )
-                              ],
-                            ),
-                          ),
+                          // SizedBox(
+                          //   height: 8.0,
+                          // ),
+                          // GestureDetector(
+                          //   onTap: () {
+                          //     showModalBottomSheet<void>(
+                          //         context: context,
+                          //         isScrollControlled: true,
+                          //         builder: (BuildContext context) {
+                          //           return ModalSetRefreshRate();
+                          //         });
+                          //   },
+                          //   child: Row(
+                          //     children: [
+                          //       Image.asset(
+                          //         "assets/ic_timer.png",
+                          //         width: ScreenUtil().setWidth(18),
+                          //       ),
+                          //       Container(
+                          //         padding: EdgeInsets.all(8.0),
+                          //         child: Text("Atur Refresh Rate"),
+                          //       )
+                          //     ],
+                          //   ),
+                          // ),
                           // SizedBox(
                           //   height: 8.0,
                           // ),

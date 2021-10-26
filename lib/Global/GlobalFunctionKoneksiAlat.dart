@@ -1,39 +1,40 @@
 
 
 
+import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:ntp/ntp.dart';
 import 'package:rekankerja/Class/ClassAlat.dart';
+import 'package:rekankerja/Class/ClassReport.dart';
 import 'package:rekankerja/DbLokal/ModelDbHelper.dart';
+import 'package:rekankerja/Global/GlobalFunctionPublishMQTT.dart';
 
 import 'GlobalFunction.dart';
 import 'GlobalVariable.dart';
 
 
 void _onDatareceives(Uint8List data) async {
-  print(data);
-  print(String.fromCharCodes(data));
+
+  //print(data);
+  //print(String.fromCharCodes(data));
 
   // {'type':1,'motion':'1','image':0}.
   String dataString = String.fromCharCodes(data);
   dataString = dataString.replaceAll("'", '"');
-  print(dataString);
+  //print(dataString);
 
   Map valueMap = jsonDecode(dataString);
 
-  ClassAlat alat = ClassAlat(valueMap["type"].toString(), valueMap["motion"], valueMap["image"].toString());
 
-  if(alat.type == "1"){
 
+  if(valueMap["type"].toString() == "1"){
+    ClassAlat alat = ClassAlat(valueMap["type"].toString(), valueMap["motion"], valueMap["image"].toString(), null, null);
     try{
-
       userLogin2.isMotion = alat.motion;
       userLogin2.isImage = alat.image;
-
-
-
       final responselog = await db.getUser();
       var userhelper = UserHelper(
           responselog[urutanDBLokalUserLogin].uid,
@@ -62,8 +63,18 @@ void _onDatareceives(Uint8List data) async {
     catch(er){
       print(er);
     }
+  } else {
+    ClassAlat alat = ClassAlat(null, null, null, valueMap["id"].toString(), valueMap["sukses"]);
 
+    List<ClassReport> _temp = [];
 
+    DateTime date = await NTP.now();
+
+    _temp.add(
+      ClassReport(userLogin2.uid, lastUidSenderMessage, alat.id, date.toString())
+    );
+
+    PublishRekanKerjaBuzzerReport(json.encode(_temp));
   }
 
 
@@ -100,7 +111,7 @@ void sendMessage(String text) async {
     try {
       connection.output.add(Uint8List.fromList(utf8.encode(text + "\r\n")));
       await connection.output.allSent;
-      print(connection);
+      //print(connection);
 
       // BluetoothConnection.toAddress(userLogin2.alatAddress).then((_connection) {
       //   try{
@@ -133,7 +144,7 @@ void sendMessage(String text) async {
 
 Future<String> connectToDevice(address, deviceName) async {
   try {
-    print("ADDRESS : " + address);
+    //print("ADDRESS : " + address);
     connection =
     await BluetoothConnection.toAddress(address);
     namaAlat = deviceName;

@@ -331,6 +331,32 @@ class AuthenticationSignIn {
             }
           } else {
             /// BILA USER SUDAH ADA DI DB
+
+            var userhelper = UserHelper(
+                responselog[urutanDBLokalUserLogin].uid,
+                responselog[urutanDBLokalUserLogin].email,
+                responselog[urutanDBLokalUserLogin].displayName,
+                responselog[urutanDBLokalUserLogin].urlPhoto,
+                responselog[urutanDBLokalUserLogin].lastLogin,
+                responselog[urutanDBLokalUserLogin].jabatan,
+                responselog[urutanDBLokalUserLogin].referall,
+                responselog[urutanDBLokalUserLogin].selfReferall,
+                responselog[urutanDBLokalUserLogin].isNotifOn,
+                responselog[urutanDBLokalUserLogin].workStatus,
+                responselog[urutanDBLokalUserLogin].keteranganWorkStatus,
+                responselog[urutanDBLokalUserLogin].latitude,
+                responselog[urutanDBLokalUserLogin].longitude,
+                "FALSE",
+                responselog[urutanDBLokalUserLogin].alatAddress,
+                responselog[urutanDBLokalUserLogin].alatNama,
+                responselog[urutanDBLokalUserLogin].isMotion,
+                responselog[urutanDBLokalUserLogin].isImage,
+                "$appVersion",
+                "$buildCode");
+            userhelper.setUserId(responselog[urutanDBLokalUserLogin].id);
+            await db.updateUser(userhelper);
+
+
             userLogin2 = ClassUserLogin(
               userLogin.uid,
               userLogin.displayName,
@@ -562,6 +588,34 @@ class Authentication {
         } else {
           /// BILA USER SUDAH ADA DI DB
           try{
+            /// UPDATE DB SUPAYA ALAT GAK KONEK DAHULU UNTUK INFO KE REKAN KERJA LAIN
+
+            //final responselog = await db.getUser();
+            var userhelper = UserHelper(
+                responselog[urutanDBLokalUserLogin].uid,
+                responselog[urutanDBLokalUserLogin].email,
+                responselog[urutanDBLokalUserLogin].displayName,
+                responselog[urutanDBLokalUserLogin].urlPhoto,
+                responselog[urutanDBLokalUserLogin].lastLogin,
+                responselog[urutanDBLokalUserLogin].jabatan,
+                responselog[urutanDBLokalUserLogin].referall,
+                responselog[urutanDBLokalUserLogin].selfReferall,
+                responselog[urutanDBLokalUserLogin].isNotifOn,
+                responselog[urutanDBLokalUserLogin].workStatus,
+                responselog[urutanDBLokalUserLogin].keteranganWorkStatus,
+                responselog[urutanDBLokalUserLogin].latitude,
+                responselog[urutanDBLokalUserLogin].longitude,
+                "FALSE",
+                responselog[urutanDBLokalUserLogin].alatAddress,
+                responselog[urutanDBLokalUserLogin].alatNama,
+                responselog[urutanDBLokalUserLogin].isMotion,
+                responselog[urutanDBLokalUserLogin].isImage,
+                "$appVersion",
+                "$buildCode");
+            userhelper.setUserId(responselog[urutanDBLokalUserLogin].id);
+            await db.updateUser(userhelper);
+
+
             userLogin2 = ClassUserLogin(
               userLogin.uid,
               userLogin.displayName,
@@ -706,7 +760,7 @@ Future<String> SetReferall(referall) async {
   try {
     final responselog = await db.getUser();
 
-    print(urutanDBLokalUserLogin);
+    //print(urutanDBLokalUserLogin);
 
     var userhelper = UserHelper(
         responselog[urutanDBLokalUserLogin].uid,
@@ -794,6 +848,10 @@ Future<String> SetStatusKerja(status) async {
 
 Future<String> SetAlatConnect(alatConnect, alatAddress, alatNama) async {
   try {
+    userLogin2.alatConnect = alatConnect; // UPDATE untuk alatConnect
+    userLogin2.alatAddress = alatAddress; // UPDATE untuk alatConnect
+    userLogin2.alatNama = alatNama; // UPDATE untuk alatConnect
+
     final responselog = await db.getUser();
     var userhelper = UserHelper(
         responselog[urutanDBLokalUserLogin].uid,
@@ -818,9 +876,7 @@ Future<String> SetAlatConnect(alatConnect, alatAddress, alatNama) async {
         "$buildCode");
     userhelper.setUserId(responselog[urutanDBLokalUserLogin].id);
     await db.updateUser(userhelper);
-    userLogin2.alatConnect = alatConnect; // UPDATE untuk alatConnect
-    userLogin2.alatAddress = alatAddress; // UPDATE untuk alatConnect
-    userLogin2.alatNama = alatNama; // UPDATE untuk alatConnect
+
     return "sukses";
   } catch (er) {
     print(er);
@@ -912,9 +968,9 @@ TimerPublishSettingAdmin() async {
       isitabelsetting[7].attribut3,
       isitabelsetting[7].attribut4);
 
-  timer = Timer.periodic(Duration(seconds: int.parse(refreshRate.attribut1)),
+  timer = Timer.periodic(Duration(seconds: int.parse("5")),
       (Timer t) {
-    print(refreshRate.attribut1);
+    //print(refreshRate.attribut1);
     PublishData();
   });
 }

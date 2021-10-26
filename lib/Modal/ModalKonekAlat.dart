@@ -20,7 +20,7 @@ class _ModalKonekAlatState extends State<ModalKonekAlat> {
   List<BluetoothDiscoveryResult> results =
   List<BluetoothDiscoveryResult>.empty(growable: true);
   bool isDiscovering = false;
-  Timer timer;
+  // Timer timer;
   bool isLoading = false;
 
   final TextEditingController _controller = new TextEditingController();
@@ -41,7 +41,7 @@ class _ModalKonekAlatState extends State<ModalKonekAlat> {
     try {
       _streamSubscription =
           FlutterBluetoothSerial.instance.startDiscovery().listen((r) {
-            print(r);
+           // print(r);
             setState(() {
               final existingIndex = results.indexWhere(
                       (element) => element.device.address == r.device.address);
@@ -178,7 +178,7 @@ class _ModalKonekAlatState extends State<ModalKonekAlat> {
                               device.name ?? '',
                               style: TextStyle(color: Colors.black, fontSize: 16),
                             ),
-                            addresstemp == address ? Text("Connected", style: TextStyle(
+                            userLogin2.alatAddress == address ? Text("Connected", style: TextStyle(
                                 color: Colors.black, fontSize: 18, fontWeight: FontWeight.w700
                             ),) : Container()
                           ],

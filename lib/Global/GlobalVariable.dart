@@ -32,6 +32,9 @@ ClassUserLogin userLogin2 = ClassUserLogin("", "", "", "", "", "", "USER", "", "
 
 ClassSettingAdmin refreshRate = ClassSettingAdmin("REFRESH RATE", "5", null, null, null); // Ini data untuk Refresh Rate
 
+/// Last UisSenderMessage
+String lastUidSenderMessage = ""; /// INI UNTUK MENGETAHUI UID SENDER YANG TERAKHIR MENGIRIM PESAN KE RECEIVER (LOGIN SEKARANG MENJADI RECEIVER)
+
 List<ClassSettingAdmin> settingAdminHariKerja = [];
 int urutanDBLokalUserLogin;
 BluetoothConnection connection;

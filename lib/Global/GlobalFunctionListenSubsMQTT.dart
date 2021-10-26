@@ -244,11 +244,13 @@ ListenRekanKerjaBuzzer(data) async {
     );
     await db.saveReceivePesan(receivepesanhelper);
 
-    print("USE BUZZER ===============================");
+    lastUidSenderMessage = listJson[0]["uidSender"]; /// INI UNTUK MENGETAHUI lastUID sender
+
+    //print("USE BUZZER ===============================");
 
     /// Buzzer convert
     int buzzerenable = 0;
-    if(listJson[0]["isUseBuzzer"]== "TRUE"){
+    if(listJson[0]["isUseBuzzer"]== "TRUE" && userLogin2.isNotifOn == "TRUE"){
       buzzerenable = 1;
     }
 
@@ -258,7 +260,6 @@ ListenRekanKerjaBuzzer(data) async {
     catch(er){
       print(er);
     }
-
   }
 
 

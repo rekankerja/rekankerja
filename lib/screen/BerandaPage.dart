@@ -31,7 +31,6 @@ class _BerandaPageState extends State<BerandaPage> with WidgetsBindingObserver {
   GoogleMapController _controller;
   Location _locationTracker = Location();
   bool firstTime = true;
-  bool isLoading = true;
 
   @override
   void initState() {
@@ -40,27 +39,38 @@ class _BerandaPageState extends State<BerandaPage> with WidgetsBindingObserver {
     //startForegroundTask();
     WidgetsBinding.instance.addObserver(this);
     addMarker();
-    //connectToDevice(userLogin2.alatAddress, userLogin2.alatNama);
     konfirmasiBluetooth();
     super.initState();
   }
 
   konfirmasiBluetooth() async {
-
-    setState(() {
-      if(connection.isConnected){
-        print(connection.isConnected);
-        userLogin2.alatConnect = "TRUE";
-        addresstemp = userLogin2.alatAddress;
-        namaAlat = userLogin2.alatNama;
-      } else{
-        userLogin2.alatConnect = "FALSE";
-        addresstemp = "";
-        namaAlat = "";
-        connectToDevice(userLogin2.alatAddress, userLogin2.alatNama);
-      }
-      isLoading = false;
-    });
+    try{
+      setState(() {
+        if(connection != null){
+          if(connection.isConnected && connection != null){
+            print(connection.isConnected);
+            userLogin2.alatConnect = "TRUE";
+            addresstemp = userLogin2.alatAddress;
+            namaAlat = userLogin2.alatNama;
+          } else{
+            userLogin2.alatConnect = "FALSE";
+            userLogin2.alatAddress = null;
+            addresstemp = "";
+            namaAlat = "";
+            connectToDevice(userLogin2.alatAddress, userLogin2.alatNama);
+          }
+        } else {
+          connectToDevice(userLogin2.alatAddress, userLogin2.alatNama);
+          // userLogin2.alatConnect = "FALSE";
+          // userLogin2.alatAddress = null;
+          // addresstemp = "";
+          // namaAlat = "";
+        }
+      });
+    }
+    catch(er){
+      print(er);
+    }
   }
 
   addMarker() async {
@@ -330,6 +340,9 @@ class _BerandaPageState extends State<BerandaPage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    setState(() {
+
+    });
     return Center(
       child: Column(
         children: <Widget>[
@@ -396,13 +409,13 @@ class _BerandaPageState extends State<BerandaPage> with WidgetsBindingObserver {
                             height: 10,
                             width: 10,
                             decoration: BoxDecoration(
-                                color: userLogin2.alatAddress != "null" ? Colors.green : Colors.red,
+                                color: userLogin2.alatConnect != "FALSE" ? Colors.green : Colors.red,
                                 borderRadius: BorderRadius.circular(20)),
                           ),
                           Text(
-                            userLogin2.alatAddress != "null" ? " AKTIF" : " TIDAK AKTIF",
+                            userLogin2.alatConnect != "FALSE" ? " AKTIF" : " TIDAK AKTIF",
                             style: TextStyle(
-                                color: userLogin2.alatAddress != "null" ? Colors.green : Colors.red,
+                                color: userLogin2.alatConnect != "FALSE" ? Colors.green : Colors.red,
                                 fontSize: ScreenUtil().setSp(12),
                                 fontWeight: FontWeight.w700),
                           )

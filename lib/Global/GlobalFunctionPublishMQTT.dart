@@ -24,11 +24,20 @@ PublishRekanKerjaJabatan(data) async {
   client.publishMessage(pubtopic5, MqttQos.exactlyOnce, builder.payload);
 }
 
-
 PublishRekanKerjaBuzzer(data) async {
   final builder = MqttClientPayloadBuilder();
   builder.addString('$data');
-  print(data);
+  //print(data);
   if (client.connectionStatus.state == MqttConnectionState.connected)
   client.publishMessage(pubtopic3, MqttQos.exactlyOnce, builder.payload);
 }
+
+PublishRekanKerjaBuzzerReport(data) async {
+  final builder = MqttClientPayloadBuilder();
+  builder.addString('$data');
+  //print(data);
+  if (client.connectionStatus.state == MqttConnectionState.connected)
+    client.publishMessage(pubtopic4, MqttQos.exactlyOnce, builder.payload);
+}
+
+

@@ -98,7 +98,7 @@ class _ModalKirimBuzzerState extends State<ModalKirimBuzzer> {
 
               List<ClassBuzzer> _temp = [];
 
-              print(widget.photoURLReceiver);
+              //print(widget.photoURLReceiver);
 
               var logsendpesanhelper = LogSendPesanHelper(
                 userLogin2.uid,
