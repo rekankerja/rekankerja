@@ -72,8 +72,8 @@ Future<int> Subs() async {
   /// an example of a specific one below.
   final connMess = MqttConnectMessage()
       .withClientIdentifier(userLogin2.uid)
-      .authenticateAs("monster_sby",
-          "P@ssw0rd") // additional code when connecting to a broker w/ creds
+      .authenticateAs("jkaisssy:jkaisssy",
+          "MjXKWcUC13vDT6WnWlKyK7I8v_sPXtTV") // additional code when connecting to a broker w/ creds
       // .withWillTopic('willtopic') // If you set this you must set a will message
       // .withWillMessage('My Will message')
       //.startClean() // Non persistent session for testing
@@ -88,7 +88,7 @@ Future<int> Subs() async {
     isMqttConnect = true;
   } on Exception catch (e) {
     isMqttConnect = false;
-    // print('client exception - $e');
+    print('client exception - $e');
     client.disconnect();
   }
 
@@ -963,12 +963,12 @@ TimerPublishSettingAdmin() async {
 
   refreshRate = ClassSettingAdmin(
       isitabelsetting[7].setting,
-      isitabelsetting[7].attribut1,
+          isitabelsetting[7].attribut1,
       isitabelsetting[7].attribut2,
       isitabelsetting[7].attribut3,
       isitabelsetting[7].attribut4);
 
-  timer = Timer.periodic(Duration(seconds: int.parse("5")),
+  timer = Timer.periodic(Duration(seconds: int.parse("10")),
       (Timer t) {
     //print(refreshRate.attribut1);
     PublishData();

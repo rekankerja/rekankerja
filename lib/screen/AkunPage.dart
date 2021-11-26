@@ -42,8 +42,7 @@ class _AkunPageState extends State<AkunPage> {
                                 Text("Apa Yang baru ?", style:TextStyle(
                                   fontWeight: FontWeight.w300,
                                 )),
-                                Text("Improve Maps"),
-                                Text("Improve tampilan alert"),
+                                Text("Improve List Rekan Kerja"),
                               ]),
                             ));
                   },

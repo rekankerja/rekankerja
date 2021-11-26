@@ -11,7 +11,7 @@ import 'package:rekankerja/DbLokal/DbHelper.dart';
 /// APP VERSION --
 
 String appVersion = "1.0.0";
-String buildCode = "3";
+String buildCode = "4";
 
 /// -------------------------------------------------------------
 /// DATABASE
@@ -19,7 +19,8 @@ var db = new DBHelper();
 /// =========================================================
 /// URL GLOBAL ///=====================================
 
-final client = MqttServerClient('192.168.100.143', '');
+//final client = MqttServerClient('192.168.100.143', '');
+final client = MqttServerClient('albatross.rmq.cloudamqp.com', '');
 
 /// -------------------------------------------------------------
 

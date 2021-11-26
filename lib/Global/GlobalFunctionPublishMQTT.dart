@@ -15,6 +15,7 @@ PublishRekanKerja(data) async {
   print('$data');
   if (client.connectionStatus.state == MqttConnectionState.connected)
   client.publishMessage(pubtopic2, MqttQos.exactlyOnce, builder.payload);
+  print(pubtopic2);
 }
 
 PublishRekanKerjaJabatan(data) async {

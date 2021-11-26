@@ -21,6 +21,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  csv: ^5.0.0
   flutter_bluetooth_serial: ^0.4.0
   http: ^0.13.4
   flutter_local_notifications: ^9.0.0
@@ -35,6 +36,7 @@ dependencies:
   firebase_auth:
   google_sign_in:
   permission_handler:
+  jiffy: ^4.1.0
   location: ^2.3.5
   google_maps_flutter: ^2.0.9
   flutter_bloc: ^7.0.1

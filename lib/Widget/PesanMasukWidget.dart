@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:ntp/ntp.dart';
 import 'package:rekankerja/Class/ClassBuzzer.dart';
@@ -143,7 +144,7 @@ class _PesanMasukWidgetState extends State<PesanMasukWidget> {
                           Text("${listpesanmasuk[i].displayNameSender}", style: TextStyle(
                             fontWeight: FontWeight.w700
                           ),),
-                          Text("Diterima pada ${listpesanmasuk[i].dateTimeReceive}", style: TextStyle(
+                          Text("Diterima pada ${Jiffy(listpesanmasuk[i].dateTimeReceive).format("dd-MMM-yyyy HH:mm")}", style: TextStyle(
                             fontSize: 12
                           ),),
                         ],

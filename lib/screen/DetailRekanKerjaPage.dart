@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:rekankerja/Global/GlobalFunctionPublishMQTT.dart';
 import 'package:rekankerja/Global/GlobalVariable.dart';
@@ -78,7 +79,7 @@ class _DetailrekanKerjaPageState extends State<DetailrekanKerjaPage> {
                     children: [
                       Text("${widget.displayName}"),
                       Text("${widget.jabatan}"),
-                      Text("Last Update : ${widget.lastUpdate}")
+                      Text("Last Update : ${Jiffy(widget.lastUpdate).format("dd-MMM-yyyy HH:mm")}")
                     ],
                   )
                 ],

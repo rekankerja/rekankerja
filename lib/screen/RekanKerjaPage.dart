@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:rekankerja/Class/ClassRekanKerja.dart';
 import 'package:rekankerja/Global/GlobalVariable.dart';
@@ -18,7 +19,7 @@ class _RekanKerjaPageState extends State<RekanKerjaPage> {
   @override
   void initState() {
     getRekanKerjaFromDB();
-    //ListenPerubahanData();
+    ListenPerubahanData();
     super.initState();
   }
 
@@ -36,11 +37,11 @@ class _RekanKerjaPageState extends State<RekanKerjaPage> {
           null,
           null,
           responselog[_i].isNotifOn,
-          responselog[_i].workStatus,
-          responselog[_i].keteranganWorkStatus,
-          responselog[_i].alatConnect,
-          responselog[_i].isMotion,
-          responselog[_i].isImage,
+          "TIDAK AKTIF",//responselog[_i].workStatus,
+          "",//responselog[_i].keteranganWorkStatus,
+          "FALSE",//responselog[_i].alatConnect,
+          "FALSE",//responselog[_i].isMotion,
+          "FALSE",//responselog[_i].isImage,
           responselog[_i].latitude,
           responselog[_i].longitude,
           responselog[_i].lastUpdate));
@@ -59,7 +60,6 @@ class _RekanKerjaPageState extends State<RekanKerjaPage> {
       if (c[0].topic.startsWith("RekanKerja/${userLogin2.referall}")) {
         //
         List listJson = jsonDecode(pt) as List;
-
 
         int indexUpdate = rekanKerja
             .indexWhere((element) => element.uid == listJson[0]["uid"]);
@@ -108,6 +108,9 @@ class _RekanKerjaPageState extends State<RekanKerjaPage> {
 
         }
       }
+      setState(() {
+        print(rekanKerja[0]);
+      });
       // print(
       //     'Change notification Dari Rekan Kerja Page:: topic is <${c[0].topic}>, payload is <-- $pt -->');
       // print('');
@@ -164,12 +167,12 @@ class _RekanKerjaPageState extends State<RekanKerjaPage> {
                                 height: 10,
                                 width: 10,
                                 decoration: BoxDecoration(
-                                    color: Colors.green,
+                                    color: rekanKerja[i].alatConnect == "TRUE" ? Colors.green : Colors.red,
                                     borderRadius: BorderRadius.circular(20)),
                               ),
                               Text(
-                                " Device Status : Active",
-                                style: TextStyle(color: Colors.green),
+                                " Device Status : ${rekanKerja[i].alatConnect}",
+                                style: TextStyle(color: rekanKerja[i].alatConnect == "TRUE" ? Colors.green : Colors.red),
                               ),
                             ],
                           ),
@@ -179,16 +182,16 @@ class _RekanKerjaPageState extends State<RekanKerjaPage> {
                                 height: 10,
                                 width: 10,
                                 decoration: BoxDecoration(
-                                    color: Colors.green,
+                                    color: rekanKerja[i].workStatus == "AKTIF" ? Colors.green : rekanKerja[i].workStatus == "ISTIRAHAT" ? Colors.yellow : Colors.red,
                                     borderRadius: BorderRadius.circular(20)),
                               ),
                               Text(
                                 " Work Status : ${rekanKerja[i].workStatus}",
-                                style: TextStyle(color: Colors.green),
+                                style: TextStyle(color: rekanKerja[i].workStatus == "AKTIF" ? Colors.green : rekanKerja[i].workStatus == "ISTIRAHAT" ? Colors.yellow : Colors.red),
                               )
                             ],
                           ),
-                          Text("Last Update : ${rekanKerja[i].lastUpdate}")
+                          Text("Last Update : ${Jiffy(rekanKerja[i].lastUpdate).format("dd-MMM-yyyy HH:mm")}")
                         ],
                       ),
                     ),
