@@ -72,11 +72,14 @@ Future<int> Subs() async {
   /// an example of a specific one below.
   final connMess = MqttConnectMessage()
       .withClientIdentifier(userLogin2.uid)
+      //.withClientIdentifier("4b275a4d-0663-4a74-9a10-d85a97439522")
       .authenticateAs("jkaisssy:jkaisssy",
           "MjXKWcUC13vDT6WnWlKyK7I8v_sPXtTV") // additional code when connecting to a broker w/ creds
+      // .authenticateAs("monster_sby",
+      //      "P@ssw0rd") // additional code when connecting to a broker w/ creds
       // .withWillTopic('willtopic') // If you set this you must set a will message
       // .withWillMessage('My Will message')
-      //.startClean() // Non persistent session for testing
+      .startClean() // Non persistent session for testing
       .withWillQos(MqttQos.atLeastOnce);
   client.connectionMessage = connMess;
 

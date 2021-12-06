@@ -19,8 +19,8 @@ var db = new DBHelper();
 /// =========================================================
 /// URL GLOBAL ///=====================================
 
-//final client = MqttServerClient('192.168.100.143', '');
-final client = MqttServerClient('albatross.rmq.cloudamqp.com', '');
+//final client = MqttServerClient('192.168.100.156', ''); // Akses Lokal
+final client = MqttServerClient('albatross.rmq.cloudamqp.com', ''); // Akses Luar
 
 /// -------------------------------------------------------------
 
