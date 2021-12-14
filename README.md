@@ -1,16 +1,13 @@
-# rekankerja
+# Rekan Kerja
 
-A new Flutter project.
+## Introduction
 
-## Getting Started
+Rekan Kerja merupakan sebuah projek opensource yang bertujuan untuk membuat sebuah sistem pemantauan pekerja pada saat melakukan WFH (Work Frome Home). Dengan Rekan Kerja diharapkan akan meningkatkan produktivitas pekerja saat melakukan WFH. Peningkatan produktivitas terjadi karena dengan Rekan Kerja integrasi antara management dengan pekerja saat melakukan WFH dapat tetap terjadi meskipun terpisah jarak.
 
-This project is a starting point for a Flutter application.
+## Fitur
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Login dengan menggunakan google.
+- Mengetahui lokasi dari rekan kerja.
+- Pengiriman pesan ke rekan kerja.
+- Kode referall agar menjadi satu tim dengan rekan kerja.
+- Monitoring status rekan kerja
